@@ -1,0 +1,31 @@
+{
+  "name": "deep-merge",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Deep Merge — an ocean-themed 2048-style merge puzzle game (Android / iOS, Capacitor).",
+  "scripts": {
+    "serve": "npx --yes http-server www -p 5173 -c-1 -o",
+    "sync": "cap sync",
+    "android": "cap run android",
+    "ios": "cap run ios",
+    "open:android": "cap open android",
+    "open:ios": "cap open ios",
+    "add:android": "cap add android",
+    "add:ios": "cap add ios"
+  },
+  "dependencies": {
+    "@capacitor-community/admob": "^6.0.0",
+    "@capacitor/android": "^6.1.2",
+    "@capacitor/app": "^6.0.1",
+    "@capacitor/core": "^6.1.2",
+    "@capacitor/haptics": "^6.0.2",
+    "@capacitor/ios": "^6.1.2",
+    "@capacitor/preferences": "^6.0.2",
+    "@capacitor/splash-screen": "^6.0.2",
+    "@capacitor/status-bar": "^6.0.1"
+  },
+  "devDependencies": {
+    "@capacitor/assets": "^3.0.5",
+    "@capacitor/cli": "^6.1.2"
+  }
+}

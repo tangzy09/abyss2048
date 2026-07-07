@@ -1,0 +1,16 @@
+{
+  "name": "2048 Abyss: Skill Roguelite",
+  "short_name": "2048 Abyss",
+  "description": "Deep-sea roguelite 2048 merge puzzle with skills and talents. Merge glowing sea creatures and dive the abyss.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#030a1d",
+  "theme_color": "#030a1d",
+  "icons": [
+    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "icons/maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}
