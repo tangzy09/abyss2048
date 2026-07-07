@@ -14,13 +14,15 @@ const Ads = (() => {
     android: 'ca-app-pub-3940256099942544/1033173712',
     ios:     'ca-app-pub-3940256099942544/4411468910',
   };
-  const AD_UNITS = {
-    // android: 'ca-app-pub-XXXXXXXX/XXXXXXXX',
-    // ios:     'ca-app-pub-XXXXXXXX/XXXXXXXX',
+  // Real AdMob ad unit ids. App ID (Info.plist GADApplicationIdentifier, iOS):
+  //   ca-app-pub-2141208066469648~7490076385
+  const AD_UNITS = {                                    // Rewarded
+    ios:     'ca-app-pub-2141208066469648/2622938680',
+    // android: '(create a separate Android AdMob app + rewarded unit)',
   };
-  const AD_UNITS_INTERSTITIAL = {
-    // android: 'ca-app-pub-XXXXXXXX/XXXXXXXX',
-    // ios:     'ca-app-pub-XXXXXXXX/XXXXXXXX',
+  const AD_UNITS_INTERSTITIAL = {                       // Interstitial
+    ios:     'ca-app-pub-2141208066469648/6074419916',
+    // android: '(create a separate Android AdMob app + interstitial unit)',
   };
 
   const Cap = Platform.Cap;
