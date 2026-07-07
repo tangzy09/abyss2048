@@ -20,3 +20,7 @@ Thumbs.db
 *.log
 .vscode/
 .idea/
+
+# Deploy (含 EC2 host + key 路径,绝不进仓库)
+deploy.sh
+*.pem
