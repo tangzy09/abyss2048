@@ -38,7 +38,7 @@ function txtR(text,x,y,color,font){ctx.fillStyle=color;ctx.font=font;ctx.textAli
 const CreatureArt = (() => {
   const imgs = {};                 // value -> loaded Image
   let loadedSkin = null;
-  const VALUES = [2,4,8,16,32,64,128,256,512,1024,2048,4096,8192,16384,32768,65536,131072,262144];
+  const VALUES = [1,2,4,8,16,32,64,128,256,512,1024,2048,4096,8192,16384,32768,65536,131072,262144];
   function load(skinId) {
     if (loadedSkin === skinId) return;
     loadedSkin = skinId;
