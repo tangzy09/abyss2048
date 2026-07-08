@@ -94,6 +94,29 @@ function drawItemIcon(id, emoji, cx, cy, size, emojiColor, emojiFont) {
   if (im) ctx.drawImage(im, cx - size/2, cy - size/2, size, size);
   else txt(emoji, cx, cy, emojiColor, emojiFont);
 }
+// ── generic art loader for talents / envs / scenes (mirror of ItemArt) ──
+function makeArt(dir, ids){
+  const imgs = {}; let started = false;
+  return { load(){ if (started) return; started = true;
+    ids.forEach(id => { const im = new Image();
+      im.onload  = () => { imgs[id] = im; if (typeof renderAll==='function') { try { renderAll(); } catch(e){} } };
+      im.onerror = () => {};
+      im.src = `assets/${dir}/${id}.webp`; }); },
+    get(id){ return imgs[id]; } };
+}
+const TalentArt = makeArt('talents', ['double','golden','hoarder']);
+const EnvArt    = makeArt('envs', ['normal','storm','fog','overtime','gravity','fogenv','bonus','valx2','scorex2']);
+const SceneArt  = makeArt('scenes', ['deep','coral','polar','abyss']);
+function drawTalentIcon(id, emoji, cx, cy, size, emojiColor, emojiFont){
+  const im = TalentArt.get(id);
+  if (im) ctx.drawImage(im, cx - size/2, cy - size/2, size, size);
+  else txt(emoji, cx, cy, emojiColor, emojiFont);
+}
+function drawEnvIcon(id, emoji, cx, cy, size, emojiColor, emojiFont){
+  const im = EnvArt.get(id);
+  if (im) ctx.drawImage(im, cx - size/2, cy - size/2, size, size);
+  else txt(emoji, cx, cy, emojiColor, emojiFont);
+}
 function layout(){
   const SW=GameGlobal.SW,SH=GameGlobal.SH,PAD=10;
   const topSafe=(GameGlobal.safeTop||0)+PAD,botSafe=(GameGlobal.safeBottom||0)+PAD;
@@ -115,7 +138,7 @@ function drawEnergyRow(L){const{PAD,SW,energyY:y,energyH:h}=L;const pct=Math.min
   const rt=`${Math.floor(G.energyScore||0)}/1000`;ctx.font='10px sans-serif';const rW=ctx.measureText(rt).width;
   const trackX=PAD+lblW+10,trackW=Math.max(20,(SW-PAD-rW-8)-trackX);
   txtL(lbl,PAD,y+h/2,C.muted,'11px sans-serif');fillRR(trackX,y+h/2-3,trackW,6,3,C.border);if(pct>0)fillRR(trackX,y+h/2-3,trackW*pct,6,3,C.accent);txtR(rt,SW-PAD,y+h/2,C.muted,'10px sans-serif');}
-function drawEnvBar(L){const{PAD,SW,envY:y,envH:h}=L;const env=G.env||ENVS[0];const envColors={normal:'#f2faff',storm:'#e2edf7',fog:'#e9eef7',overtime:'#f9e8ee',gravity:'#e7eff8',fogenv:'#ecf1f9',bonus:'#e6f7ee',valx2:'#fff0e2',scorex2:'#fff4d8'};fillRR(PAD,y,SW-PAD*2,h,16,envColors[env.id]||C.surface);strokeRR(PAD,y,SW-PAD*2,h,16,C.border);txt(env.icon||'🌊',PAD+20,y+h/2,C.text,'22px sans-serif');txtL(env.name,PAD+38,y+14,C.text,'bold 13px sans-serif');txtL(env.desc,PAD+38,y+30,C.muted,'10px sans-serif');if(env.steps>0&&G.phase==='PLAYING'){const left=Math.max(0,env.steps-(G.stepCount-G.envStartStep));const isGood=['bonus','valx2','scorex2'].includes(env.id);txt(T('ui.stepsLeft',{n:left}),SW-PAD-16,y+h/2,isGood?C.success:C.danger,'bold 16px sans-serif');}}
+function drawEnvBar(L){const{PAD,SW,envY:y,envH:h}=L;const env=G.env||ENVS[0];const envColors={normal:'#f2faff',storm:'#e2edf7',fog:'#e9eef7',overtime:'#f9e8ee',gravity:'#e7eff8',fogenv:'#ecf1f9',bonus:'#e6f7ee',valx2:'#fff0e2',scorex2:'#fff4d8'};fillRR(PAD,y,SW-PAD*2,h,16,envColors[env.id]||C.surface);strokeRR(PAD,y,SW-PAD*2,h,16,C.border);drawEnvIcon(env.id,env.icon||'🌊',PAD+20,y+h/2,Math.min(h-6,30),C.text,'22px sans-serif');txtL(env.name,PAD+38,y+14,C.text,'bold 13px sans-serif');txtL(env.desc,PAD+38,y+30,C.muted,'10px sans-serif');if(env.steps>0&&G.phase==='PLAYING'){const left=Math.max(0,env.steps-(G.stepCount-G.envStartStep));const isGood=['bonus','valx2','scorex2'].includes(env.id);txt(T('ui.stepsLeft',{n:left}),SW-PAD-16,y+h/2,isGood?C.success:C.danger,'bold 16px sans-serif');}}
 function drawTalentBar(L){if(!L.talentH)return;const{PAD,talentY:y,talentH:h}=L;let x=PAD;G.talents.forEach(t=>{const lbl=`${t.icon} ${t.name}`;ctx.font='11px sans-serif';const tw=ctx.measureText(lbl).width+20;fillRR(x,y,tw,h,14,'rgba(102,85,255,0.1)');strokeRR(x,y,tw,h,14,C.purple);txt(lbl,x+tw/2,y+h/2,C.purple,'11px sans-serif');x+=tw+6;});}
 function drawItemBar(L){const{PAD,SW,itemY:y,itemH:h}=L;txtL(T('ui.equip'),PAD,y+h/2,C.muted,'10px sans-serif');const slots=G.itemSlots||4;const slotW=52,gap=6;const startX=PAD+32;const rarityColors={common:C.success,rare:C.purple,epic:C.accent};for(let i=0;i<slots;i++){const sx=startX+i*(slotW+gap);const item=G.items[i];const isActive=(G.bombMode&&G.bombSlot===i)||G.itemMode?.slotIdx===i;const border=isActive?C.accent:(item?(rarityColors[item.rarity]||C.border):C.border);fillRR(sx,y+2,slotW,h-4,14,C.surface);strokeRR(sx,y+2,slotW,h-4,14,border,isActive?2:1);if(item){drawItemIcon(item.id,item.icon,sx+slotW/2,y+18,34,C.text,'22px sans-serif');txt(item.name,sx+slotW/2,y+h-12,C.muted,'7px sans-serif');}else{txt(T('ui.empty'),sx+slotW/2,y+h/2,C.border,'16px sans-serif');}addHit(sx,y+2,slotW,h-4,'USE_ITEM',{slotIdx:i});}}
 function drawBoard(L){CreatureArt.load(typeof activeSkinId!=='undefined'?activeSkinId:'deep');const{boardX:bx,boardY:by,boardSize:bs}=L;const s=G.size,PAD2=8,GAP=6;const ts=(bs-PAD2*2-GAP*(s-1))/s;const tr=Math.min(18,ts*0.28);fillRR(bx,by,bs,bs,20,C.surface);strokeRR(bx,by,bs,bs,20,C.border);for(let r=0;r<s;r++){for(let c=0;c<s;c++){const tx=bx+PAD2+c*(ts+GAP);const ty=by+PAD2+r*(ts+GAP);const v=G.board[r][c];const idx=r*s+c;const st=G.specialTiles[idx];const isFog=st?.type==='fog'&&v!==0;const isLk=st?.type==='locked';let style=tileStyle(isFog?null:v);if(isFog)style={bg:'#dbe8f2',fg:'#9cc0d6'};fillRR(tx,ty,ts,ts,tr,style.bg);if(isLk)ctx.globalAlpha=0.4;let hlColor=null;if(G.bombMode&&v&&v!==0)hlColor=C.danger;if(G.itemMode?.type==='amplify'&&v>0&&v<=256)hlColor=C.success;if(G.itemMode?.type==='gamble'&&v>0&&v<=1024)hlColor=C.accent;if(G.itemMode?.type==='yolo'&&v&&v>0)hlColor=C.purple;if(G.itemMode?.type==='halve'&&v>=4)hlColor=C.accent;if(G.itemMode?.type==='swap'){const isFirst=G.swapState?.first?.r===r&&G.swapState?.first?.c===c;if(isFirst)hlColor=C.success;else if(v!==0)hlColor=C.purple;}if(hlColor){ctx.globalAlpha=0.9;strokeRR(tx,ty,ts,ts,tr,hlColor,2);ctx.globalAlpha=1;}if(v){if(isFog||v===-1||!drawCreatureTile(tx,ty,ts,v,style)){const disp=isFog?'？':(v===-1?T('ui.ghost'):(v>=10000?`${(v/1000).toFixed(1).replace(/\.0$/,'')}k`:String(v)));const digits=disp.length;const fs=digits<=2?ts*0.42:digits===3?ts*0.33:digits===4?ts*0.26:ts*0.2;txt(disp,tx+ts/2,ty+ts/2-(LABELS[v]?6:0),style.fg,`bold ${Math.round(fs)}px sans-serif`);if(!isFog&&LABELS[v])txt(LABELS[v],tx+ts/2,ty+ts-8,style.fg+'dd',`${Math.max(7,Math.round(ts*0.13))}px sans-serif`);}}ctx.globalAlpha=1;if(G.bombMode||G.itemMode)addHit(tx,ty,ts,ts,'TILE_CLICK',{r,c});}}}
@@ -170,7 +193,7 @@ function drawButtons(L){
   btns.forEach(b=>{const bw=(totalW-totalGap)*(b.flex/totalFlex);const col=b.color||C.text;fillRR(bx,y,bw,h,14,C.surface);strokeRR(bx,y,bw,h,14,b.color?b.color:C.border);txt(b.label,bx+bw/2,y+h/2,col,'12px sans-serif');addHit(bx,y,bw,h,b.action,{});bx+=bw+6;});
 }
 function drawDim(){ctx.fillStyle=(typeof C!=='undefined'&&C.bg2)?'rgba(207,235,255,0.86)':'rgba(0,0,0,0.75)';ctx.fillRect(0,0,GameGlobal.SW,GameGlobal.SH);}
-function drawTalentOverlay(L){drawDim();const SW=GameGlobal.SW,SH=GameGlobal.SH;const lv=LEVELS[G.levelIdx];txt(T('talentSelect.title'),SW/2,80,C.purple,'bold 18px sans-serif');txt(T('talentSelect.level',{name:lv.name}),SW/2,108,C.muted,'12px sans-serif');const cardW=SW-40,cardH=80;const startY=136;TALENTS.forEach((t,i)=>{const cy=startY+i*(cardH+10);fillRR(20,cy,cardW,cardH,12,C.surface2);strokeRR(20,cy,cardW,cardH,12,C.border);txt(t.icon,20+34,cy+cardH/2,C.text,'28px sans-serif');txtL(t.name,20+58,cy+22,C.text,'bold 14px sans-serif');txtLWrap(t.desc,20+58,cy+50,cardW-140,C.muted,'11px sans-serif',14);const badgeW=44;fillRR(20+cardW-badgeW-10,cy+cardH/2-10,badgeW,20,10,'rgba(102,85,255,0.2)');txt(t.badge,20+cardW-badgeW/2-10,cy+cardH/2,C.purple,'10px sans-serif');addHit(20,cy,cardW,cardH,'SELECT_TALENT',{talent:t});});const skipY=startY+TALENTS.length*(cardH+10);fillRR(20,skipY,cardW,42,10,C.surface);strokeRR(20,skipY,cardW,42,10,C.border);txt(T('talentSelect.skip'),SW/2,skipY+21,C.muted,'13px sans-serif');addHit(20,skipY,cardW,42,'SELECT_TALENT',{talent:null});}
+function drawTalentOverlay(L){drawDim();const SW=GameGlobal.SW,SH=GameGlobal.SH;const lv=LEVELS[G.levelIdx];txt(T('talentSelect.title'),SW/2,80,C.purple,'bold 18px sans-serif');txt(T('talentSelect.level',{name:lv.name}),SW/2,108,C.muted,'12px sans-serif');const cardW=SW-40,cardH=80;const startY=136;TALENTS.forEach((t,i)=>{const cy=startY+i*(cardH+10);fillRR(20,cy,cardW,cardH,12,C.surface2);strokeRR(20,cy,cardW,cardH,12,C.border);drawTalentIcon(t.id,t.icon,20+34,cy+cardH/2,52,C.text,'28px sans-serif');txtL(t.name,20+58,cy+22,C.text,'bold 14px sans-serif');txtLWrap(t.desc,20+58,cy+50,cardW-140,C.muted,'11px sans-serif',14);const badgeW=44;fillRR(20+cardW-badgeW-10,cy+cardH/2-10,badgeW,20,10,'rgba(102,85,255,0.2)');txt(t.badge,20+cardW-badgeW/2-10,cy+cardH/2,C.purple,'10px sans-serif');addHit(20,cy,cardW,cardH,'SELECT_TALENT',{talent:t});});const skipY=startY+TALENTS.length*(cardH+10);fillRR(20,skipY,cardW,42,10,C.surface);strokeRR(20,skipY,cardW,42,10,C.border);txt(T('talentSelect.skip'),SW/2,skipY+21,C.muted,'13px sans-serif');addHit(20,skipY,cardW,42,'SELECT_TALENT',{talent:null});}
 function getFragRewardText(levelIdx){
   const FRAG_RARITY=['common','rare','epic'];
   const FRAG_LABELS={common:T('frag.common'),rare:T('frag.rare'),epic:T('frag.epic')};
@@ -210,9 +233,9 @@ function drawInfoOverlay(){
   const tabY=titleY+44,tabH=34;const tabW=(SW-32)/3;
   tabs.forEach((t,i)=>{const tx=16+i*tabW;const active=G.infoTab===t.key;fillRR(tx,tabY,tabW-4,tabH,8,active?C.purple:C.surface);txt(t.label,tx+(tabW-4)/2,tabY+tabH/2,active?C.text:C.muted,`${active?'bold ':''}13px sans-serif`);addHit(tx,tabY,tabW-4,tabH,'SET_INFO_TAB',{tab:t.key});});
   const contentY=tabY+tabH+10;const cardW=SW-32;
-  if(G.infoTab==='talent'){TALENTS.forEach((t,i)=>{const cy=contentY+i*86;fillRR(16,cy,cardW,80,10,C.surface);strokeRR(16,cy,cardW,80,10,C.border);txt(t.icon,16+28,cy+40,C.text,'26px sans-serif');txtL(t.name,16+52,cy+22,C.accent,'bold 13px sans-serif');txtL(t.badge,16+cardW-44,cy+22,C.purple,'bold 11px sans-serif');const words=t.desc,maxW=cardW-60;ctx.font='11px sans-serif';if(ctx.measureText(words).width<=maxW){txtL(words,16+52,cy+52,C.muted,'11px sans-serif');}else{const mid=Math.floor(words.length/2);txtL(words.slice(0,mid),16+52,cy+44,C.muted,'11px sans-serif');txtL(words.slice(mid),16+52,cy+60,C.muted,'11px sans-serif');}});}
+  if(G.infoTab==='talent'){TALENTS.forEach((t,i)=>{const cy=contentY+i*86;fillRR(16,cy,cardW,80,10,C.surface);strokeRR(16,cy,cardW,80,10,C.border);drawTalentIcon(t.id,t.icon,16+28,cy+40,46,C.text,'26px sans-serif');txtL(t.name,16+52,cy+22,C.accent,'bold 13px sans-serif');txtL(t.badge,16+cardW-44,cy+22,C.purple,'bold 11px sans-serif');const words=t.desc,maxW=cardW-60;ctx.font='11px sans-serif';if(ctx.measureText(words).width<=maxW){txtL(words,16+52,cy+52,C.muted,'11px sans-serif');}else{const mid=Math.floor(words.length/2);txtL(words.slice(0,mid),16+52,cy+44,C.muted,'11px sans-serif');txtL(words.slice(mid),16+52,cy+60,C.muted,'11px sans-serif');}});}
   else if(G.infoTab==='item'){const items=Object.values(ITEMS_DEF);const cols=2,colW=(cardW-8)/2,rowH=70;const rarityColors={common:C.success,rare:C.purple,epic:C.accent};items.forEach((item,i)=>{const col=i%cols,row=Math.floor(i/cols);const cx2=16+col*(colW+8);const cy=contentY+row*(rowH+6);fillRR(cx2,cy,colW,rowH-2,8,C.surface);strokeRR(cx2,cy,colW,rowH-2,8,rarityColors[item.rarity]||C.border);drawItemIcon(item.id,item.icon,cx2+20,cy+22,30,C.text,'20px sans-serif');txtL(item.name,cx2+36,cy+16,C.text,'bold 12px sans-serif');txtL(item.rarityLabel,cx2+36,cy+32,rarityColors[item.rarity],'10px sans-serif');ctx.font='10px sans-serif';let desc=item.desc;while(desc.length>2&&ctx.measureText(desc).width>colW-12)desc=desc.slice(0,-1);txtL(desc,cx2+6,cy+54,C.muted,'10px sans-serif');});}
-  else if(G.infoTab==='env'){const envList=ENVS.slice(1);envList.forEach((env,i)=>{const cy=contentY+i*56;fillRR(16,cy,cardW,50,8,C.surface);strokeRR(16,cy,cardW,50,8,C.border);txt(env.icon,16+22,cy+25,C.text,'20px sans-serif');txtL(env.name,16+42,cy+14,C.text,'bold 12px sans-serif');txtL(env.desc,16+42,cy+34,C.muted,'10px sans-serif');});}
+  else if(G.infoTab==='env'){const envList=ENVS.slice(1);envList.forEach((env,i)=>{const cy=contentY+i*56;fillRR(16,cy,cardW,50,8,C.surface);strokeRR(16,cy,cardW,50,8,C.border);drawEnvIcon(env.id,env.icon,16+22,cy+25,36,C.text,'20px sans-serif');txtL(env.name,16+42,cy+14,C.text,'bold 12px sans-serif');txtL(env.desc,16+42,cy+34,C.muted,'10px sans-serif');});}
   // Privacy options — GDPR consent management entry point (bottom of the page).
   const pH=38,pY=SH-pH-24,pW=200;fillRR(SW/2-pW/2,pY,pW,pH,14,C.surface);strokeRR(SW/2-pW/2,pY,pW,pH,14,C.border);txt(T('info.privacy'),SW/2,pY+pH/2,C.muted,'12px sans-serif');addHit(SW/2-pW/2,pY,pW,pH,'PRIVACY_OPTIONS',{});
 }
@@ -239,10 +262,15 @@ function updateControlsVisibility(){
   bar.style.display=show?'flex':'none';
 }
 function renderAll(){
-  if(!ctx)return;ItemArt.load();hitAreas=[];const L=layout();const SW=GameGlobal.SW,SH=GameGlobal.SH;
+  if(!ctx)return;ItemArt.load();TalentArt.load();EnvArt.load();SceneArt.load();hitAreas=[];const L=layout();const SW=GameGlobal.SW,SH=GameGlobal.SH;
   updateControlsVisibility();
   if(C.bg2){const g=ctx.createLinearGradient(0,0,0,SH);g.addColorStop(0,C.bg2);g.addColorStop(1,C.bg);ctx.fillStyle=g;}else{ctx.fillStyle=C.bg;}
   ctx.fillRect(0,0,SW,SH);
+  // scene background per skin (cover-fit); solid gradient above is the fallback until it loads
+  const _sk=(typeof activeSkinId!=='undefined')?activeSkinId:'deep';const _scn=SceneArt.get(_sk);
+  if(_scn){const sc=Math.max(SW/_scn.width,SH/_scn.height),dw=_scn.width*sc,dh=_scn.height*sc;ctx.drawImage(_scn,(SW-dw)/2,(SH-dh)/2,dw,dh);
+    // subtle scrim so UI text keeps contrast (light skins→white veil, dark→black veil)
+    ctx.fillStyle=C.bg2?'rgba(230,244,255,0.28)':'rgba(0,10,20,0.32)';ctx.fillRect(0,0,SW,SH);}
   if(G.phase==='HOME'){drawHome();if(G.infoOpen)drawInfoOverlay();drawFloat();return;}
   if(G.phase==='TALENT_SELECT'){drawTalentOverlay(L);drawFloat();return;}
   if(G.phase==='LEVEL_INTRO'){drawLevelIntro();drawFloat();return;}

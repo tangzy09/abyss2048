@@ -1,18 +1,19 @@
 # 2048 Abyss — 美术生成提示词汇总
 
-用法:每条 `id` 就是**输出文件名**;把 `prompt` 整段复制给 Gemini 生成,保存成 `<id>.png`(或 .webp)。
-生成后按下表放到对应目录,我再接进渲染管线(现在这些还是 emoji)。
+> ✅ **已全部本地生成 + 接入渲染(2026-07-07)**:27 张(11 道具 + 3 天赋 + 9 海况 + 4 场景)用**本机 ComfyUI + Flux-schnell** 出图 → **BiRefNet(RMBG-2.0)抠图** → webp,放进 `www/assets/{items,talents,envs,scenes}/`,`render.js` 已加图片加载器(ItemArt/TalentArt/EnvArt/SceneArt)替换掉 emoji。**本文件 = 提示词真源**,要重出/加新图标照下表跑。管线见全局 skill `comfyui-flux-local`(本地生成+抠图)。
 
-| 类别 | id 前缀 | 存放目录 | 规格 |
+**文件命名铁律**:资源文件名 = **游戏内 id(去掉 `item-`/`talent-`/`env-`/`scene-` 前缀)**,如 `item-bomb` → `www/assets/items/bomb.webp`(render.js 加载器按游戏 id 找;prompt 的 `id:` 只是本表编号)。场景 id = 皮肤 id(deep/coral/polar/abyss)。
+
+| 类别 | id 前缀 | 存放(文件名去前缀) | 规格 |
 |---|---|---|---|
-| 道具 | `item-*` | `www/assets/items/` | 512×512,**纯洋红底 #FF00FF**,无文字 |
-| 天赋 | `talent-*` | `www/assets/talents/` | 512×512,**纯洋红底 #FF00FF**,无文字 |
-| 海况 | `env-*` | `www/assets/envs/` | 512×512,**纯洋红底 #FF00FF**,无文字 |
-| 场景 | `scene-*` | `www/assets/scenes/` | 竖屏 9:16(建议 1290×2796),不透明 |
+| 道具 | `item-*` | `www/assets/items/<id>.webp` | 生成 1024² → BiRefNet 抠透明 → 512 webp |
+| 天赋 | `talent-*` | `www/assets/talents/<id>.webp` | 同上;**做圆形徽章填满画面**,三个天赋要等大 |
+| 海况 | `env-*` | `www/assets/envs/<id>.webp` | 同上 |
+| 场景 | `scene-*` | `www/assets/scenes/<id>.webp` | 竖屏 9:16(864×1536),**不透明**,直接转 webp(不抠) |
 
-> ⚠ **图标类用纯洋红 `#FF00FF` 底,不要用"透明"**(Gemini 的透明是假的,会画成棋盘实底)。纯洋红我按颜色精确扣除,干净且保留全部细节(气泡/辉光都在)。交给我时我会:抠洋红 → 裁水印 → 缩放 → 转 webp。
+> ⚠ **抠图不再靠洋红 chroma**:Flux 不给纯平底(有渐变/残留),改用 **BiRefNet/RMBG-2.0** 任意背景精准抠(零残留、保气泡辉光)。prompt 里 `#FF00FF 底` 留着无妨,但已非必需。
 > 生物(tile 立绘)已从 fishId 库导入,**不用生成**。
-> 图标类务必**透明底 + 无文字 + 主体大而居中**(游戏里显示很小);场景类务必**中间安静、明暗贴合皮肤**(deep/coral 亮、polar/abyss 暗),否则 UI 文字看不清。
+> 图标类务必**主体大而居中、圆形徽章填满**(游戏里显示很小,天赋三个要等大);场景类务必**中间安静、明暗贴合皮肤**(deep/coral 亮、polar/abyss 暗),否则 UI 文字看不清。
 
 ---
 
