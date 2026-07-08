@@ -61,8 +61,19 @@ npx cap open ios             # 用 Xcode 打开并运行
 
 ## 上线前必须替换的配置（⚠ 缺一项就会被拒审 / 封号）
 
-### 1. 真实 AdMob 广告位 —— `www/js/ads.js`
-当前用 Google **测试广告位**（`initializeForTesting: true`）。**用测试位跑真实流量会被 AdMob 封号**。填入你自己的两类广告位：
+> **✅ 本项目（2048 Abyss）现状（2026-07-07）**：§1 AdMob 真实广告位（iOS+Android 双端）、§3 隐私政策 URL、§4 应用标识 **均已配齐**；iOS 已提交 App Store 审核，Android 正式 AAB 已发 Google Play **internal 轨**。以下保留为配置参考 / 复用说明。
+
+### 1. 真实 AdMob 广告位 —— `www/js/ads.js` ✅ 已完成
+~~当前用 Google 测试广告位~~ → 真实广告位已填入（`ads.js` 的 `android`/`ios` 全有真 ID，`initializeForTesting` 随之自动关）。**用测试位跑真实流量会被 AdMob 封号**——已避开。
+- **应用 ID（`~`）**：iOS `…~7490076385`（Info.plist `GADApplicationIdentifier`）、Android `…~1041052250`（AndroidManifest `com.google.android.gms.ads.APPLICATION_ID`）
+- **广告位 ID（`/`）**：激励 iOS `…/2622938680` · Android `…/4271931810`；插屏 iOS `…/6074419916` · Android `…/4694568252`
+- ⚠ 上线后**自测别点自己的真广告**（判无效流量）→ 先把测试机加进 AdMob Test devices。
+
+> **AdMob 后台要分平台各建一个独立 app**（iOS、Android 是**两个** AdMob app，广告位 ID **不通用**）。每个 app 下各建 **Rewarded** + **Interstitial** 两个广告位。拿到的 ID 有两类，别搞混：
+> - **应用 ID**：`ca-app-pub-xxx`**`~`**`xxx`（`~` 号）→ 放原生工程（下方）；
+> - **广告位 ID**：`ca-app-pub-xxx`**`/`**`xxx`（`/` 号）→ 放 `ads.js` 的 `AD_UNITS`。
+
+填入你自己的两类广告位（`ads.js` 里 android 一填上真 ID，`initializeForTesting` 就自动关、转投真广告——见 `init()` 的判据 `!AD_UNITS[platform]`）：
 ```js
 const AD_UNITS              = { android:'ca-app-pub-你的ID/激励位', ios:'ca-app-pub-你的ID/激励位' };
 const AD_UNITS_INTERSTITIAL = { android:'ca-app-pub-你的ID/插屏位', ios:'ca-app-pub-你的ID/插屏位' };
@@ -70,7 +81,10 @@ const AD_UNITS_INTERSTITIAL = { android:'ca-app-pub-你的ID/插屏位', ios:'ca
 并在原生工程填入 AdMob **应用 ID**：
 - Android: `android/app/src/main/AndroidManifest.xml` 加
   `<meta-data android:name="com.google.android.gms.ads.APPLICATION_ID" android:value="ca-app-pub-xxx~xxx"/>`
+  （android 工程是 gitignore 的，改 `ads.js` 后要 `npx cap sync android` 才进包；manifest 改动 cap sync 不覆盖，本地维护即可）
 - iOS: `ios/App/App/Info.plist` 加 `GADApplicationIdentifier`。
+
+> ⚠ **正常现象别误判**：新建的 AdMob app 状态是 **Requires review**（等审核，几天），新广告位**数小时后**才有填充——刚建完显示「无广告/限量」不是你配错了。
 
 ### 2. 广告合规：UMP 同意 + iOS ATT
 代码已接入合规流程（`ads.js` 的 `requestConsent()`：`initialize → requestConsentInfo → showConsentForm → ATT`），但**还需两处外部配置，否则弹不出同意框、审核必拒**：
@@ -83,11 +97,11 @@ const AD_UNITS_INTERSTITIAL = { android:'ca-app-pub-你的ID/插屏位', ios:'ca
 ### 3. 隐私政策 URL（App Store / Play 都必填）
 广告 app 必须提供隐私政策链接。仓库自带模板 `www/privacy.html`——填好联系邮箱后托管到任意静态站（可用 `ec2-nginx-static-deploy`），把 URL 填进两个商店的 App 隐私设置。同时按 SDK 数据收集情况填 Play「数据安全」表单 / App Store「App 隐私」标签。
 
-### 4. 应用标识 —— `capacitor.config.json`
+### 4. 应用标识 —— `capacitor.config.json` ✅ 已完成
 ```json
-{ "appId": "com.app4096.deepmerge", "appName": "Deep Merge" }
+{ "appId": "com.aispeeds.abyss2048", "appName": "2048 Abyss" }
 ```
-改成你自己的包名 / 名称。
+包名两平台共用、**永久不可改**（连字符会破坏 Android，故用无连字符 `com.aispeeds.abyss2048`）。
 
 ### 5. 图标与启动图
 把 `resources/icon.png`（1024×1024）和 `resources/splash.png`（2732×2732）放好后：

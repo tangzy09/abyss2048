@@ -24,3 +24,7 @@ Thumbs.db
 # Deploy (含 EC2 host + key 路径,绝不进仓库)
 deploy.sh
 *.pem
+
+# 一次性 Play/App Store 截图生成器(绑本地 scratchpad 路径,非 app 代码)
+_pcap.mjs
+_pcompose.mjs

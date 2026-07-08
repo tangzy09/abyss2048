@@ -18,11 +18,11 @@ const Ads = (() => {
   //   ca-app-pub-2141208066469648~7490076385
   const AD_UNITS = {                                    // Rewarded
     ios:     'ca-app-pub-2141208066469648/2622938680',
-    // android: '(create a separate Android AdMob app + rewarded unit)',
+    android: 'ca-app-pub-2141208066469648/4271931810',
   };
   const AD_UNITS_INTERSTITIAL = {                       // Interstitial
     ios:     'ca-app-pub-2141208066469648/6074419916',
-    // android: '(create a separate Android AdMob app + interstitial unit)',
+    android: 'ca-app-pub-2141208066469648/4694568252',
   };
 
   const Cap = Platform.Cap;
@@ -92,7 +92,8 @@ const Ads = (() => {
   // Returns Promise<boolean> — true if an ad was shown.
   async function showInterstitial() {
     if (!Platform.isNative || !plugin) {
-      // Web fallback: simulate the interstitial so the flow is visible in-browser.
+      // On a game portal (GD/CrazyGames/Poki) route to its ad SDK; else simulate in-browser.
+      if (Portal.active) { await Portal.showInterstitial(); return true; }
       try { window.confirm(I18N.t('ads.simInterstitial')); } catch (e) {}
       return true;
     }
@@ -112,7 +113,8 @@ const Ads = (() => {
   // Returns Promise<boolean> — true if the user earned the reward.
   async function showRewarded() {
     if (!Platform.isNative || !plugin) {
-      // Web fallback: simulate watching an ad.
+      // On a game portal route to its rewarded SDK; else simulate watching an ad in-browser.
+      if (Portal.active) return Portal.showRewarded();
       return new Promise(res => {
         const ok = window.confirm(I18N.t('ads.simWatch'));
         setTimeout(() => res(ok), ok ? 400 : 0);

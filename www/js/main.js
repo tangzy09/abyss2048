@@ -148,6 +148,7 @@ window.addEventListener('resize', () => { initCanvas(); renderAll(); });
 async function boot(){
   await Platform.hydrate(['dm_lang','dm_skin','dm_best','dm_rewards','dm_save','dm_sfx']);
   GameGlobal.sfxOn = Platform.storage.get('dm_sfx') !== '0'; // persisted sound toggle (default on)
+  Portal.boot();   // load the game-portal ad SDK early (no-op on native / plain web)
   await Ads.init();
 
   // re-render whenever language changes
