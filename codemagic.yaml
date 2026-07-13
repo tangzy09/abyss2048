@@ -36,6 +36,11 @@ workflows:
           set -e
           PLIST=ios/App/App/Info.plist
           plutil -replace ITSAppUsesNonExemptEncryption -bool false "$PLIST"
+          # App Store 商品页的「语言」栏**只读这个键**,不看商店页本地化。Capacitor 用 JS 切语言、包里
+          # 没有 .lproj → 不声明就只显示 "English",本 app 实际有 10 种语言(www/js/i18n.js 的 SUPPORTED
+          # + www/locales/ 下 10 个 json,各 310 key 全译)。⚠ 清单必须与 SUPPORTED **逐一对应**、
+          # 只列真实存在的语言(虚报=苹果 2.3 拒审);zh-CN 在这里要写苹果标准码 zh-Hans。
+          plutil -replace CFBundleLocalizations -json '["en","zh-Hans","es","hi","bn","pt-BR","ru","ja","pa","de"]' "$PLIST"
           # AdMob App ID(缺了 Google Mobile Ads SDK 启动即崩)
           plutil -replace GADApplicationIdentifier -string "ca-app-pub-2141208066469648~7490076385" "$PLIST"
           # ATT 授权弹窗文案(缺了调 requestTrackingAuthorization 会崩/被拒)
