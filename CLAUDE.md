@@ -2,7 +2,9 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
-**Deep Merge** — an ocean-themed 2048-style merge puzzle, plain HTML5 Canvas wrapped by **Capacitor** into native Android/iOS. No build step, no framework, no bundler.
+**Abyss Merge** (深渊合成) — an ocean creature-evolution merge roguelite: draft a talent, loot gear, survive shifting ocean hazards, evolve creatures through 19 tiers. Plain HTML5 Canvas wrapped by **Capacitor** into native Android/iOS. No build step, no framework, no bundler.
+
+> ⚠️ The app was rejected once under **App Store Guideline 4.3(a) Design-Spam** for looking like a 2048 clone. Everything in "Three hard rules" §3 below exists because of that. Read it before touching the renderer or any store text. Full playbook: `~/.claude/skills/avoiding-clone-spam-rejection/`.
 
 ## Commands
 
@@ -36,11 +38,16 @@ input (main.js) → move()/dispatch() mutates G → flushPending() → renderAll
 
 **Environments & progression.** `LEVELS` (constants.js) drive size/target/endless. Every step `tickEnv()` may swap `G.env` to a random hazard/buff from `ENVS` (storm/fog/gravity/×2…) with `onStart/onStep/onEnd` hooks mutating the board. Talents (run modifiers), items (per-move powerups, `ITEMS_DEF` + `use*`/`activateMode` handlers), and rewards (energy bar / level-win / rewarded-ad) are all in `logic.js`.
 
-## Two hard rules when editing
+## Three hard rules when editing
 
 1. **No hardcoded user-facing text.** All strings come from `www/locales/<lang>.json` via `I18N.t('dotted.key', {params})`. `constants.js` config objects (`LEVELS`, `TALENTS`, `ITEMS_DEF`, `ENVS`, `ACHS`, `SKINS`) carry only numeric/structural fields; their `.name/.desc/.title/...` are injected at runtime by `applyLocale()`. When you add a level/item/env/talent, add its numeric entry **and** the matching keys in every locale file, then wire it into `applyLocale()`. Add a language by dropping `<lang>.json` and adding it to `SUPPORTED` in `i18n.js`.
 
 2. **Platform calls go through the abstraction layers, never directly.** `Platform.storage.get/set` (sync facade over Capacitor Preferences / localStorage; keys must be pre-declared in `Platform.hydrate([...])` at boot in `main.js`). `IAP` (RevenueCat) and `Ads` (AdMob rewarded) both **degrade to web simulations** (`window.confirm`) when not native, so the full monetization flow is testable in the browser. Premium (`IAP.isPremium()`) unlocks premium skins and makes rewarded-gear instant (skips the ad).
+
+3. **Never show a raw board value, and never write "2048" anywhere a human can see.** Board values stay powers of two *internally* — `slideArr`, scoring, `checkAch`, the palettes and `LABELS` are all keyed by them, and that is fine. But every user-facing number goes through **`tierDisp(v)`** (`constants.js`: `tierOf = log2(v)`, so 2 → `Lv.1`, 4 → `Lv.2` … 1 → `Lv.0` debris). Powers of two printed on tiles are 2048's signature look and are exactly what got this app rejected under 4.3(a).
+   - This leaks in more places than you'd think: tile badges, the home preview strip, level goals, `float.*` messages (crit/double/gamble/halve), item thresholds in locale text (`≤Lv.8`, not `≤256`), tutorial copy, talent descriptions with worked examples. **Add a locale string with a raw board value and you have re-broken this.**
+   - Same for the word "2048": it must not appear in any locale file, `index.html`, manifests, `privacy.html`, store metadata, or the App Review notes. It survives only in code (internal values, `TILE_KEYS`, asset filenames like `tile-2048.webp`) — invisible to users, fine.
+   - Guard both with an assertion over every `www/locales/*.json` before shipping. Background and full playbook: `~/.claude/skills/avoiding-clone-spam-rejection/`.
 
 ## Before release (all in README.md §"上线前必须替换")
 

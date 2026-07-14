@@ -1,7 +1,12 @@
-# Deep Merge 🌊 — 海洋合并消除（Android / iOS）
+# Abyss Merge 🌊 深渊合成 — 海洋生物进化肉鸽（Android / iOS）
 
-一款海洋题材的 2048 风格合并消除休闲游戏，用 **Capacitor** 打包成原生 Android / iOS app。
-纯 HTML5 Canvas 渲染，**自带 i18n（中文 / 英文）**、**纯广告变现（AdMob 激励视频 + 插屏）**。
+开局选天赋、途中捡装备，在不断变化的海况里把手绘海洋生物一路进化到第 19 阶。
+用 **Capacitor** 打包成原生 Android / iOS app，纯 HTML5 Canvas 渲染，
+**10 种语言 i18n**、**纯广告变现（AdMob 激励视频 + 插屏）**。
+
+> ⚠️ **本作曾因 App Store Guideline 4.3(a)（Design - Spam，"像克隆"）被拒审一次。**
+> 棋盘上**绝不显示 2 的幂**（内部照常是 2/4/8…，显示层一律走 `tierDisp()` 变成 `Lv.N`），
+> 任何面向用户的地方都不许出现「2048」字样。详见 `CLAUDE.md` 的第 3 条铁律。
 
 > 本项目独立自包含，不依赖任何外部项目。
 
@@ -61,7 +66,9 @@ npx cap open ios             # 用 Xcode 打开并运行
 
 ## 上线前必须替换的配置（⚠ 缺一项就会被拒审 / 封号）
 
-> **✅ 本项目（2048 Abyss）现状（2026-07-07）**：§1 AdMob 真实广告位（iOS+Android 双端）、§3 隐私政策 URL、§4 应用标识 **均已配齐**；iOS 已提交 App Store 审核，Android 正式 AAB 已发 Google Play **internal 轨**。以下保留为配置参考 / 复用说明。
+> **✅ 本项目（Abyss Merge）现状（2026-07-14）**：§1 AdMob 真实广告位（iOS+Android 双端）、§3 隐私政策 URL、§4 应用标识 **均已配齐**。
+> iOS：1.0 因 4.3(a) spam 拒审 → 已彻底去 2048 化 + 改名 Abyss Merge，挂 build #3 **重新提交审核中**。
+> Android：正式 AAB 已发 Google Play **internal 轨**。以下保留为配置参考 / 复用说明。
 
 ### 1. 真实 AdMob 广告位 —— `www/js/ads.js` ✅ 已完成
 ~~当前用 Google 测试广告位~~ → 真实广告位已填入（`ads.js` 的 `android`/`ios` 全有真 ID，`initializeForTesting` 随之自动关）。**用测试位跑真实流量会被 AdMob 封号**——已避开。
@@ -99,9 +106,10 @@ const AD_UNITS_INTERSTITIAL = { android:'ca-app-pub-你的ID/插屏位', ios:'ca
 
 ### 4. 应用标识 —— `capacitor.config.json` ✅ 已完成
 ```json
-{ "appId": "com.aispeeds.abyss2048", "appName": "2048 Abyss" }
+{ "appId": "com.aispeeds.abyss2048", "appName": "Abyss Merge" }
 ```
 包名两平台共用、**永久不可改**（连字符会破坏 Android，故用无连字符 `com.aispeeds.abyss2048`）。
+⚠️ Bundle ID 里的 `abyss2048` 是历史遗留、改不了，但**用户和 ASO 都看不到**，苹果也未就此提出问题——不要因此把 2048 加回任何可见的地方。
 
 ### 5. 图标与启动图
 把 `resources/icon.png`（1024×1024）和 `resources/splash.png`（2732×2732）放好后：
