@@ -5,6 +5,9 @@ function applySkin(id) {
   const s = SKINS.find(x => x.id === id);
   if (!s) return;
   activeSkinId = id;
+  // wipe first: Object.assign alone leaves keys the new palette doesn't define (bg2 only
+  // exists on 'deep'), so switching skins used to inherit stale colours from the old one.
+  for (const k of Object.keys(C)) delete C[k];
   Object.assign(C, s.palette);
   Object.assign(TILE_MAP, s.tileMap);
   LABELS = s.labels || {};

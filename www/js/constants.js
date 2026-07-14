@@ -3,7 +3,7 @@
 // All player-facing text is injected from i18n by applyLocale().
 // ════════════════════════════════════════
 const C = {
-  bg:'#e9f6ff', bg2:'#cfebff', surface:'#ffffff', surface2:'#eef8ff', border:'#c6e6f5',
+  dark:false, bg:'#e9f6ff', bg2:'#cfebff', surface:'#ffffff', surface2:'#eef8ff', border:'#c6e6f5',
   text:'#2f5a75', muted:'#6b96af', accent:'#ff5e93', accent2:'#2bb3a3',
   danger:'#ff5c83', success:'#2eb98a', purple:'#8f6fe0', cyan:'#3f9fc9',
 };
@@ -45,12 +45,12 @@ let activeSkinId = 'deep';
 // Skins: all free (ad-only monetization; no buyout).
 const SKINS = [
   { id:'deep', icon:'🌊', palette:{
-      bg:'#e9f6ff', bg2:'#cfebff', surface:'#ffffff', surface2:'#eef8ff', border:'#c6e6f5',
+      dark:false, bg:'#e9f6ff', bg2:'#cfebff', surface:'#ffffff', surface2:'#eef8ff', border:'#c6e6f5',
       text:'#2f5a75', muted:'#6b96af', accent:'#ff5e93', accent2:'#2bb3a3',
       danger:'#ff5c83', success:'#2eb98a', purple:'#8f6fe0', cyan:'#3f9fc9' },
     tileMap:{ ...CUTE_TILES } },
   { id:'coral', icon:'☀️', palette:{
-      bg:'#fff8f0', surface:'#fef0dc', surface2:'#fde8cc', border:'#f0c888',
+      dark:false, bg:'#fff8f0', surface:'#fef0dc', surface2:'#fde8cc', border:'#f0c888',
       text:'#3a2010', muted:'#b08060', accent:'#ff6633', accent2:'#ffaa00',
       danger:'#cc2200', success:'#44aa66', purple:'#cc4488', cyan:'#0099cc' },
     tileMap:{
@@ -62,7 +62,7 @@ const SKINS = [
       1048576:{bg:'#883300',fg:'#ffccaa'},2097152:{bg:'#660044',fg:'#ffaacc'},4194304:{bg:'#003366',fg:'#aaddff'},8388608:{bg:'#664400',fg:'#ffd888'},
       16777216:{bg:'#ffffff',fg:'#ff4400'} } },
   { id:'polar', icon:'🌌', palette:{
-      bg:'#050f1a', surface:'#081828', surface2:'#0a2038', border:'#1a4060',
+      dark:true, bg:'#050f1a', surface:'#081828', surface2:'#0a2038', border:'#1a4060',
       text:'#c0f0ff', muted:'#3a6888', accent:'#00ffcc', accent2:'#88ddff',
       danger:'#ff4466', success:'#00ffaa', purple:'#aa66ff', cyan:'#00ddff' },
     tileMap:{
@@ -74,7 +74,7 @@ const SKINS = [
       1048576:{bg:'#180800',fg:'#ffbb44'},2097152:{bg:'#150010',fg:'#ff66ff'},4194304:{bg:'#001020',fg:'#44ffff'},8388608:{bg:'#1a1000',fg:'#ffee44'},
       16777216:{bg:'#e8f8ff',fg:'#001833'} } },
   { id:'abyss', icon:'✨', palette:{
-      bg:'#000000', surface:'#050505', surface2:'#0a0a0a', border:'#1a1a1a',
+      dark:true, bg:'#000000', surface:'#050505', surface2:'#0a0a0a', border:'#1a1a1a',
       text:'#ffffff', muted:'#444444', accent:'#39ff14', accent2:'#ff00aa',
       danger:'#ff0044', success:'#39ff14', purple:'#cc00ff', cyan:'#00ffff' },
     tileMap:{
