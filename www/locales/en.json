@@ -1,7 +1,10 @@
 {
-  "lang": { "name": "English", "toggle": "Language" },
+  "lang": {
+    "name": "English",
+    "toggle": "Language"
+  },
   "home": {
-    "title": "2048 Abyss",
+    "title": "Abyss Merge",
     "subtitle": "Making of a Diver",
     "bestRecord": "Best depth  {best}",
     "dive": "Dive!",
@@ -32,23 +35,34 @@
     "start": "Start diving!",
     "levelN": "Level {n}",
     "targetLabel": "Goal",
-    "targetVal": "Merge up to {val} ({name})",
+    "targetVal": "Merge up to {name} ({val})",
     "targetEndless": "Endless abyss — go as deep as you can",
     "sizeLabel": "Board size",
     "initLabel": "Starting creature",
-    "initVal": "Board starts with {val} ({name})",
+    "initVal": "Board starts with {name} ({val})",
     "diffLabel": "Difficulty",
     "diffHard": "Hard — sea events more frequent",
     "tutorial": [
       "👆 Swipe, or use arrows / WASD, to push all creatures",
       "🐟 Identical creatures merge and evolve on contact",
-      "🎯 Goal: merge up to Octopus (32) to clear!",
+      "🎯 Goal: merge up to Octopus (Lv.5) to clear!",
       "⚠️ If the sea fills up, oxygen runs out — game over",
       "🎒 Use talents and gear to dive deeper"
     ]
   },
-  "win": { "next": "Next →", "continue": "Keep diving →", "restart": "Restart", "title": "Cleared!" },
-  "lose": { "clear": "📺 Watch ad to clear ≤4 creatures ({n})", "noClear": "No ≤4 creatures to clear", "retry": "Retry", "restart": "Restart", "title": "Out of oxygen!" },
+  "win": {
+    "next": "Next →",
+    "continue": "Keep diving →",
+    "restart": "Restart",
+    "title": "Cleared!"
+  },
+  "lose": {
+    "clear": "📺 Watch ad to clear ≤Lv.2 creatures ({n})",
+    "noClear": "No ≤Lv.2 creatures to clear",
+    "retry": "Retry",
+    "restart": "Restart",
+    "title": "Out of oxygen!"
+  },
   "reward": {
     "titleEnergy": "⚡ Energy full!",
     "titleHoarder": "🎒 Deep Backpacker!",
@@ -60,7 +74,16 @@
     "subWin": "Pick a gear to carry to the next level",
     "skip": "Skip, no gear"
   },
-  "info": { "title": "How to play", "tabs": { "talent": "Talents", "item": "Gear", "env": "Sea" }, "privacy": "🛡 Privacy options", "privacyNative": "Available in the installed app only" },
+  "info": {
+    "title": "How to play",
+    "tabs": {
+      "talent": "Talents",
+      "item": "Gear",
+      "env": "Sea"
+    },
+    "privacy": "🛡 Privacy options",
+    "privacyNative": "Available in the installed app only"
+  },
   "frag": {
     "common": "🪨 Common Shard",
     "rare": "💎 Rare Shard",
@@ -68,7 +91,10 @@
     "claimed": "✅ Today's shard claimed",
     "available": "{label} ×1  — clear to earn!"
   },
-  "ads": { "simWatch": "(Simulated ad) Watch a rewarded video to get the reward?", "simInterstitial": "(Simulated interstitial ad) Tap OK to close" },
+  "ads": {
+    "simWatch": "(Simulated ad) Watch a rewarded video to get the reward?",
+    "simInterstitial": "(Simulated interstitial ad) Tap OK to close"
+  },
   "float": {
     "crit": "⚡ Pressure crit! → {val}",
     "doubleItem": "⚡ Double gear! → {val}",
@@ -81,10 +107,10 @@
     "bombArm": "💣 Tap any cell to detonate!",
     "bombCancel": "Bomb cancelled",
     "cancel": "Cancelled",
-    "tipAmplify": "🔆 Tap a creature ≤256 to evolve",
-    "tipGamble": "🎲 Tap a creature ≤1024 (50% evolve / 50% vanish)",
+    "tipAmplify": "🔆 Tap a creature ≤Lv.8 to evolve",
+    "tipGamble": "🎲 Tap a creature ≤Lv.10 (50% evolve / 50% vanish)",
     "tipYolo": "🎰 Tap any creature (25% double / 75% vanish)",
-    "tipHalve": "✂️ Tap a creature ≥4 to halve",
+    "tipHalve": "✂️ Tap a creature ≥Lv.2 to halve",
     "tipSwap": "🔁 Tap the first creature",
     "shuffle": "🔀 Current shuffle!",
     "noUndo": "No move to undo",
@@ -106,79 +132,305 @@
     "swapDone": "🔁 Swapped!",
     "rewardGot": "{icon} Got {rarity} gear: {name}",
     "rewardBagFull": "🎒 Gear full, {name} discarded",
-    "clearSmall": "Cleared all ≤4 creatures!",
+    "clearSmall": "Cleared all ≤Lv.2 creatures!",
     "adNoReward": "Ad not finished — no reward"
   },
-  "rarity": { "common": "Common", "rare": "Rare", "epic": "Abyssal" },
+  "rarity": {
+    "common": "Common",
+    "rare": "Rare",
+    "epic": "Abyssal"
+  },
   "talents": {
-    "double": { "name": "Pressure Crit", "desc": "Every 5 merges, the tile value doubles (128+128=512)", "badge": "Crit" },
-    "golden": { "name": "Sea God's Touch", "desc": "Each merge has a 20% chance to double the value", "badge": "Lucky" },
-    "hoarder": { "name": "Deep Backpacker", "desc": "Expands gear to 7 slots; a gear pick every 100 steps", "badge": "Hoard" }
+    "double": {
+      "name": "Pressure Crit",
+      "desc": "Every 5 merges, the tile value doubles (Lv.7+Lv.7=Lv.9)",
+      "badge": "Crit"
+    },
+    "golden": {
+      "name": "Sea God's Touch",
+      "desc": "Each merge has a 20% chance to double the value",
+      "badge": "Lucky"
+    },
+    "hoarder": {
+      "name": "Deep Backpacker",
+      "desc": "Expands gear to 7 slots; a gear pick every 100 steps",
+      "badge": "Hoard"
+    }
   },
   "items": {
-    "bomb": { "name": "Depth Bomb", "desc": "Detonate the creature on a chosen cell" },
-    "shuffle": { "name": "Current Shuffle", "desc": "Randomly rearrange all cells" },
-    "undo": { "name": "Backflow", "desc": "Undo your last move" },
-    "double": { "name": "Pressure Boost", "desc": "Next merge value ×2" },
-    "amplify": { "name": "Growth Hormone", "desc": "Double a creature ≤256" },
-    "gamble": { "name": "Deep Bet", "desc": "50% evolve / 50% vanish (≤1024)" },
-    "joker": { "name": "Deep Ghost", "desc": "Place a ghost tile; merges with ≤2048" },
-    "yolo": { "name": "Abyss Gamble", "desc": "25% evolve, 75% vanish (any creature)" },
-    "swap": { "name": "Current Swap", "desc": "Swap two creatures' positions" },
-    "halve": { "name": "Pressure Cut", "desc": "Halve a creature ≥4" },
-    "freeze": { "name": "Deep Freeze", "desc": "No new creature for the next 5 slides" }
+    "bomb": {
+      "name": "Depth Bomb",
+      "desc": "Detonate the creature on a chosen cell"
+    },
+    "shuffle": {
+      "name": "Current Shuffle",
+      "desc": "Randomly rearrange all cells"
+    },
+    "undo": {
+      "name": "Backflow",
+      "desc": "Undo your last move"
+    },
+    "double": {
+      "name": "Pressure Boost",
+      "desc": "Next merge value ×2"
+    },
+    "amplify": {
+      "name": "Growth Hormone",
+      "desc": "Double a creature ≤Lv.8"
+    },
+    "gamble": {
+      "name": "Deep Bet",
+      "desc": "50% evolve / 50% vanish (≤Lv.10)"
+    },
+    "joker": {
+      "name": "Deep Ghost",
+      "desc": "Place a ghost tile; merges with ≤Lv.11"
+    },
+    "yolo": {
+      "name": "Abyss Gamble",
+      "desc": "25% evolve, 75% vanish (any creature)"
+    },
+    "swap": {
+      "name": "Current Swap",
+      "desc": "Swap two creatures' positions"
+    },
+    "halve": {
+      "name": "Pressure Cut",
+      "desc": "Halve a creature ≥Lv.2"
+    },
+    "freeze": {
+      "name": "Deep Freeze",
+      "desc": "No new creature for the next 5 slides"
+    }
   },
   "envs": {
-    "normal": { "name": "Calm Seas", "desc": "Normal diving, steady currents" },
-    "storm": { "name": "Seabed Vortex", "desc": "20 steps; a shrimp rushes in every 5 steps" },
-    "fog": { "name": "Squid Patrol", "desc": "20 steps; 3 random cells masked by ink" },
-    "overtime": { "name": "Net Lock", "desc": "15 steps; locks 1 cell for 3 steps each step" },
-    "bonus": { "name": "Treasure Surge", "desc": "10 steps; score ×1.5" },
-    "gravity": { "name": "Tidal Reverse", "desc": "15 steps; up/down reversed" },
-    "fogenv": { "name": "Deep Fog", "desc": "15 steps; 4 random cells go dark" },
-    "valx2": { "name": "Evolution Frenzy", "desc": "10 steps; merge value doubled" },
-    "scorex2": { "name": "Double Bubbles", "desc": "10 steps; merge score ×2" }
+    "normal": {
+      "name": "Calm Seas",
+      "desc": "Normal diving, steady currents"
+    },
+    "storm": {
+      "name": "Seabed Vortex",
+      "desc": "20 steps; a shrimp rushes in every 5 steps"
+    },
+    "fog": {
+      "name": "Squid Patrol",
+      "desc": "20 steps; 3 random cells masked by ink"
+    },
+    "overtime": {
+      "name": "Net Lock",
+      "desc": "15 steps; locks 1 cell for 3 steps each step"
+    },
+    "bonus": {
+      "name": "Treasure Surge",
+      "desc": "10 steps; score ×1.5"
+    },
+    "gravity": {
+      "name": "Tidal Reverse",
+      "desc": "15 steps; up/down reversed"
+    },
+    "fogenv": {
+      "name": "Deep Fog",
+      "desc": "15 steps; 4 random cells go dark"
+    },
+    "valx2": {
+      "name": "Evolution Frenzy",
+      "desc": "10 steps; merge value doubled"
+    },
+    "scorex2": {
+      "name": "Double Bubbles",
+      "desc": "10 steps; merge score ×2"
+    }
   },
   "achievements": {
-    "32":   { "title": "Certified Diver", "desc": "Finally put on the diving suit!" },
-    "128":  { "title": "Met a Blue Whale", "desc": "It glanced at you and swam off" },
-    "256":  { "title": "Jaws Escape", "desc": "The Great White says you're not plump enough" },
-    "1024": { "title": "Deep Explorer", "desc": "Only the sound of oxygen in the dark" },
-    "2048": { "title": "Abyss Conqueror", "desc": "The ultimate deep-sea achievement!" }
+    "32": {
+      "title": "Certified Diver",
+      "desc": "Finally put on the diving suit!"
+    },
+    "128": {
+      "title": "Met a Blue Whale",
+      "desc": "It glanced at you and swam off"
+    },
+    "256": {
+      "title": "Jaws Escape",
+      "desc": "The Great White says you're not plump enough"
+    },
+    "1024": {
+      "title": "Deep Explorer",
+      "desc": "Only the sound of oxygen in the dark"
+    },
+    "2048": {
+      "title": "Abyss Conqueror",
+      "desc": "The ultimate deep-sea achievement!"
+    }
   },
   "taunts": [
-    "Another fine day to sink into the deep", "Merge to 2048? As hard as surfacing", "So close! Every single time",
-    "A fish glanced at you; you pretend to swim", "First rule of the sea: find a bigger fish",
-    "Low on oxygen, but your merging is soaring", "It's not sinking, it's a strategic descent",
-    "A failed merge is fine — oxygen's almost out anyway", "Life is like the deep: the more you merge, the deeper",
-    "Failure is the mother of success; shuffling is the father of surfacing", "Fate dealt you small fish — but you can merge",
-    "Take a deep breath… wait, is there enough oxygen?", "Go diver, find a bigger fish today too",
-    "The whale says go 2000m; I say merge to 2048", "Pressure's up again — merge one round to cool off",
-    "The end of the universe is the seabed", "Corner tactic: push the big fish to the corner",
-    "Slow is fine; a full board is the enemy", "Right now, you're making a deep-sea miracle", "Board can be full, oxygen can't be empty"
+    "Another fine day to sink into the deep",
+    "Reach Lv.11? As hard as surfacing",
+    "So close! Every single time",
+    "A fish glanced at you; you pretend to swim",
+    "First rule of the sea: find a bigger fish",
+    "Low on oxygen, but your merging is soaring",
+    "It's not sinking, it's a strategic descent",
+    "A failed merge is fine — oxygen's almost out anyway",
+    "Life is like the deep: the more you merge, the deeper",
+    "Failure is the mother of success; shuffling is the father of surfacing",
+    "Fate dealt you small fish — but you can merge",
+    "Take a deep breath… wait, is there enough oxygen?",
+    "Go diver, find a bigger fish today too",
+    "The whale says go 2000m; I say evolve to Lv.11",
+    "Pressure's up again — merge one round to cool off",
+    "The end of the universe is the seabed",
+    "Corner tactic: push the big fish to the corner",
+    "Slow is fine; a full board is the enemy",
+    "Right now, you're making a deep-sea miracle",
+    "Board can be full, oxygen can't be empty"
   ],
   "levels": [
-    { "name": "First Snorkel", "winTitle": "Surfaced safely!", "winSub": "Met the octopus — your diving journey begins!", "loseTitle": "Almost drowned!", "loseSub": "Try again — you'll swim back to shore this time!" },
-    { "name": "Coral Reef", "winTitle": "Through the reef!", "winSub": "Merged a Giant Squid — now a pro diver!", "loseTitle": "Stronger each time!", "loseSub": "A full board is fine — that's how pros train!" },
-    { "name": "Into the Abyss", "winTitle": "Abyss conquered!", "winSub": "Legendary diver — clear rate <0.1%!", "loseTitle": "You're already amazing!", "loseSub": "Anyone this deep is a hero — give it another shot!" },
-    { "name": "Endless Abyss", "winTitle": null, "winSub": null, "loseTitle": "Legendary diver!", "loseSub": "Making it this far makes you a deep-sea master!" }
+    {
+      "name": "First Snorkel",
+      "winTitle": "Surfaced safely!",
+      "winSub": "Met the octopus — your diving journey begins!",
+      "loseTitle": "Almost drowned!",
+      "loseSub": "Try again — you'll swim back to shore this time!"
+    },
+    {
+      "name": "Coral Reef",
+      "winTitle": "Through the reef!",
+      "winSub": "Merged a Giant Squid — now a pro diver!",
+      "loseTitle": "Stronger each time!",
+      "loseSub": "A full board is fine — that's how pros train!"
+    },
+    {
+      "name": "Into the Abyss",
+      "winTitle": "Abyss conquered!",
+      "winSub": "Legendary diver — clear rate <0.1%!",
+      "loseTitle": "You're already amazing!",
+      "loseSub": "Anyone this deep is a hero — give it another shot!"
+    },
+    {
+      "name": "Endless Abyss",
+      "winTitle": null,
+      "winSub": null,
+      "loseTitle": "Legendary diver!",
+      "loseSub": "Making it this far makes you a deep-sea master!"
+    }
   ],
   "skins": {
     "deep": {
       "name": "Midnight Deep",
-      "labels": { "2": "Krill", "4": "Jellyfish", "8": "Clownfish", "16": "Pufferfish", "32": "Octopus", "64": "Sea Lion", "128": "Beluga", "256": "Great White", "512": "Giant Squid", "1024": "Anglerfish", "2048": "Abyss Demon", "4096": "Legend Whale", "8192": "Deep God", "16384": "Sea Myth", "32768": "Dive Master", "65536": "Sea God Weeps", "131072": "The Ocean Fades", "262144": "Resting on the Seabed", "524288": "Cosmic Abyss", "1048576": "Bottom of Time", "2097152": "Beyond the Deep", "4194304": "Indescribable", "8388608": "You Won, Fish", "16777216": "One with the Sea" }
+      "labels": {
+        "2": "Krill",
+        "4": "Jellyfish",
+        "8": "Clownfish",
+        "16": "Pufferfish",
+        "32": "Octopus",
+        "64": "Sea Lion",
+        "128": "Beluga",
+        "256": "Great White",
+        "512": "Giant Squid",
+        "1024": "Anglerfish",
+        "2048": "Abyss Demon",
+        "4096": "Legend Whale",
+        "8192": "Deep God",
+        "16384": "Sea Myth",
+        "32768": "Dive Master",
+        "65536": "Sea God Weeps",
+        "131072": "The Ocean Fades",
+        "262144": "Resting on the Seabed",
+        "524288": "Cosmic Abyss",
+        "1048576": "Bottom of Time",
+        "2097152": "Beyond the Deep",
+        "4194304": "Indescribable",
+        "8388608": "You Won, Fish",
+        "16777216": "One with the Sea"
+      }
     },
     "coral": {
       "name": "Coral Sunlight",
-      "labels": { "2": "Pygmy Seahorse", "4": "Anemone", "8": "Clownfish", "16": "Butterflyfish", "32": "Angelfish", "64": "Sea Turtle", "128": "Dolphin", "256": "Whale Shark", "512": "Bluefin Tuna", "1024": "Sailfish", "2048": "Coral Queen", "4096": "Ocean Guardian", "8192": "Coral Legend", "16384": "Warm Current God", "32768": "Coral Master", "65536": "Tropical Sea God", "131072": "Ocean Home", "262144": "Coral Eternal", "524288": "Shallow Cosmos", "1048576": "Time Reef", "2097152": "Beyond Currents", "4194304": "Boundless Coral", "8388608": "You Won, Reef", "16777216": "Light to Sea" }
+      "labels": {
+        "2": "Pygmy Seahorse",
+        "4": "Anemone",
+        "8": "Clownfish",
+        "16": "Butterflyfish",
+        "32": "Angelfish",
+        "64": "Sea Turtle",
+        "128": "Dolphin",
+        "256": "Whale Shark",
+        "512": "Bluefin Tuna",
+        "1024": "Sailfish",
+        "2048": "Coral Queen",
+        "4096": "Ocean Guardian",
+        "8192": "Coral Legend",
+        "16384": "Warm Current God",
+        "32768": "Coral Master",
+        "65536": "Tropical Sea God",
+        "131072": "Ocean Home",
+        "262144": "Coral Eternal",
+        "524288": "Shallow Cosmos",
+        "1048576": "Time Reef",
+        "2097152": "Beyond Currents",
+        "4194304": "Boundless Coral",
+        "8388608": "You Won, Reef",
+        "16777216": "Light to Sea"
+      }
     },
     "polar": {
       "name": "Polar Aurora",
-      "labels": { "2": "Krill", "4": "Icefish", "8": "Seal", "16": "Dugong", "32": "Narwhal", "64": "Beluga", "128": "Minke Whale", "256": "Orca", "512": "Bowhead Whale", "1024": "Greenland Shark", "2048": "Aurora Beast", "4096": "Ice God", "8192": "Polar God", "16384": "Aurora Legend", "32768": "Ice Sea Master", "65536": "Arctic Sea God", "131072": "Glacier Gone", "262144": "Polar Eternal", "524288": "Polar Night Cosmos", "1048576": "Time Frozen", "2097152": "Beyond Polar", "4194304": "Cannot Freeze", "8388608": "You Won, Ice", "16777216": "Light to Pole" }
+      "labels": {
+        "2": "Krill",
+        "4": "Icefish",
+        "8": "Seal",
+        "16": "Dugong",
+        "32": "Narwhal",
+        "64": "Beluga",
+        "128": "Minke Whale",
+        "256": "Orca",
+        "512": "Bowhead Whale",
+        "1024": "Greenland Shark",
+        "2048": "Aurora Beast",
+        "4096": "Ice God",
+        "8192": "Polar God",
+        "16384": "Aurora Legend",
+        "32768": "Ice Sea Master",
+        "65536": "Arctic Sea God",
+        "131072": "Glacier Gone",
+        "262144": "Polar Eternal",
+        "524288": "Polar Night Cosmos",
+        "1048576": "Time Frozen",
+        "2097152": "Beyond Polar",
+        "4194304": "Cannot Freeze",
+        "8388608": "You Won, Ice",
+        "16777216": "Light to Pole"
+      }
     },
     "abyss": {
       "name": "Abyss Glow",
-      "labels": { "2": "Glow Krill", "4": "Lanternfish", "8": "Glow Jelly", "16": "Deep Bass", "32": "Electric Eel", "64": "Anglerfish", "128": "Giant Squid", "256": "Deep Crab", "512": "Ghost Shark", "1024": "Dragonfish", "2048": "Abyss Lord", "4096": "Dark God", "8192": "Glow Legend", "16384": "Abyss Master", "32768": "Glow God", "65536": "Abyss Sea God", "131072": "Ocean Dark", "262144": "Glow Eternal", "524288": "Abyss Cosmos", "1048576": "Deep Time", "2097152": "Beyond Dark", "4194304": "Indescribable", "8388608": "You Won, Abyss", "16777216": "Light to Abyss" }
+      "labels": {
+        "2": "Glow Krill",
+        "4": "Lanternfish",
+        "8": "Glow Jelly",
+        "16": "Deep Bass",
+        "32": "Electric Eel",
+        "64": "Anglerfish",
+        "128": "Giant Squid",
+        "256": "Deep Crab",
+        "512": "Ghost Shark",
+        "1024": "Dragonfish",
+        "2048": "Abyss Lord",
+        "4096": "Dark God",
+        "8192": "Glow Legend",
+        "16384": "Abyss Master",
+        "32768": "Glow God",
+        "65536": "Abyss Sea God",
+        "131072": "Ocean Dark",
+        "262144": "Glow Eternal",
+        "524288": "Abyss Cosmos",
+        "1048576": "Deep Time",
+        "2097152": "Beyond Dark",
+        "4194304": "Indescribable",
+        "8388608": "You Won, Abyss",
+        "16777216": "Light to Abyss"
+      }
     }
   }
 }

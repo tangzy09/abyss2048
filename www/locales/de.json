@@ -1,27 +1,436 @@
 {
-  "lang": { "name": "Deutsch", "toggle": "Sprache" },
-  "home": { "title": "2048 Abyss", "subtitle": "Werde ein Taucher", "bestRecord": "Beste Tiefe  {best}", "dive": "Abtauchen!", "guide": "Anleitung", "tip": "Erste Meeresregel: Finde einen größeren Fisch", "keyHint": "← Pfeile / WASD zum Bewegen" },
-  "ui": { "score": "Tiefe", "steps": "Züge", "best": "Best", "energy": "⚡ Energie", "equip": "Ausrüstung", "newGame": "🔄 Neu tauchen", "adGear": "📺 Ad-Gear", "empty": "—", "stepsLeft": "{n} übrig", "ghost": "?" },
-  "talentSelect": { "title": "🐚 Wähle ein Talent", "level": "Level: {name}", "skip": "🎲 Nackt tauchen" },
-  "levelIntro": { "tutorialTitle": "Tauchanleitung für Anfänger", "tutorialStart": "Verstanden, los!", "start": "Tauchgang starten!", "levelN": "Level {n}", "targetLabel": "Ziel", "targetVal": "Bis {val} verschmelzen ({name})", "targetEndless": "Endloser Abgrund — tauche so tief du kannst", "sizeLabel": "Feldgröße", "initLabel": "Startkreatur", "initVal": "Feld beginnt mit {val} ({name})", "diffLabel": "Schwierigkeit", "diffHard": "Schwer — häufigere Meeresereignisse", "tutorial": [ "👆 Wische oder nutze Pfeile / WASD, um alle Kreaturen zu schieben", "🐟 Gleiche Kreaturen verschmelzen und entwickeln sich bei Berührung", "🎯 Ziel: Bis zum Oktopus (32) verschmelzen, um zu gewinnen!", "⚠️ Füllt sich das Meer, geht der Sauerstoff aus — Spiel vorbei", "🎒 Nutze Talente und Ausrüstung, um tiefer zu tauchen" ] },
-  "win": { "next": "Weiter →", "continue": "Weiter tauchen →", "restart": "Neustart", "title": "Geschafft!" },
-  "lose": { "clear": "📺 Ad ansehen und ≤4 Kreaturen entfernen ({n})", "noClear": "Keine ≤4 Kreaturen zum Entfernen", "retry": "Erneut", "restart": "Neustart", "title": "Sauerstoff leer!" },
-  "reward": { "titleEnergy": "⚡ Energie voll!", "titleHoarder": "🎒 Tiefsee-Rucksack!", "titleShare": "Meeresgrund-Belohnung!", "titleWin": "🎁 Sieg-Belohnung!", "subEnergy": "Punktzahl bei 1000 — wähle eine Ausrüstung", "subHoarder": "Ausrüstung alle 100 Züge", "subShare": "Ausrüstung wählen ({n} übrig)", "subWin": "Wähle Ausrüstung fürs nächste Level", "skip": "Überspringen, keine Ausrüstung" },
-  "info": { "title": "Spielanleitung", "tabs": { "talent": "Talente", "item": "Ausrüstung", "env": "Meer" }, "privacy": "🛡 Datenschutz-Optionen", "privacyNative": "Nur in der installierten App verfügbar" },
-  "frag": { "common": "🪨 Gewöhnliche Scherbe", "rare": "💎 Seltene Scherbe", "epic": "🔮 Epische Scherbe", "claimed": "✅ Heutige Scherbe erhalten", "available": "{label} ×1  — gewinne, um sie zu verdienen!" },
-  "ads": { "simWatch": "(Simulierte Ad) Belohnungsvideo ansehen für die Belohnung?", "simInterstitial": "(Simulierte Interstitial-Ad) Tippe OK zum Schließen" },
-  "float": { "crit": "⚡ Druck-Krit! → {val}", "doubleItem": "⚡ Doppelte Ausrüstung! → {val}", "golden": "✨ Gunst des Meeresgotts! → {val}", "freezeEnd": "⏸️ Tiefenfrost beendet", "envStart": "{icon} {name}!", "envEnd": "{icon} {name} beendet", "haveItem": "{icon} {name} schon vorhanden, verworfen", "bagFull": "🎒 Ausrüstung voll, verworfen", "bombArm": "💣 Tippe auf ein Feld zum Zünden!", "bombCancel": "Bombe abgebrochen", "cancel": "Abgebrochen", "tipAmplify": "🔆 Tippe eine Kreatur ≤256 zum Entwickeln", "tipGamble": "🎲 Tippe eine Kreatur ≤1024 (50% entwickeln / 50% verschwinden)", "tipYolo": "🎰 Tippe eine beliebige Kreatur (25% verdoppeln / 75% verschwinden)", "tipHalve": "✂️ Tippe eine Kreatur ≥4 zum Halbieren", "tipSwap": "🔁 Tippe die erste Kreatur", "shuffle": "🔀 Strömungs-Shuffle!", "noUndo": "Kein Zug zum Rückgängigmachen", "undo": "⏪ Ein Zug rückgängig", "double": "⚡ Nächste Verschmelzung verdoppelt!", "freeze": "⏸️ Keine neue Kreatur für die nächsten 5 Züge!", "noJokerSpace": "Kein freies Feld für den Geist", "joker": "🃏 Der Tiefsee-Geist lauert!", "fogNoBomb": "Von Tinte verdeckt — kein Zünden möglich!", "bombHit": "💥 Versenkt!", "amplifyDone": "🔆 {from}→{to}!", "gambleWin": "🎲 Wette gewonnen! {from}→{to}", "gambleLose": "🎲 Wette verloren! {val} verschwunden", "yoloWin": "🎰 Großer Gewinn! {from}→{to}", "yoloLose": "🎰 Weg! {val} verschwunden", "halveDone": "✂️ {from}→{to}", "swapSecond": "🔁 Tippe die zweite Kreatur", "swapCancel": "🔁 Abgebrochen, tippe erneut die erste", "swapDone": "🔁 Getauscht!", "rewardGot": "{icon} {rarity} Ausrüstung erhalten: {name}", "rewardBagFull": "🎒 Ausrüstung voll, {name} verworfen", "clearSmall": "Alle ≤4 Kreaturen entfernt!", "adNoReward": "Ad nicht beendet — keine Belohnung" },
-  "rarity": { "common": "Gewöhnlich", "rare": "Selten", "epic": "Abyssal" },
-  "talents": { "double": { "name": "Druck-Krit", "desc": "Alle 5 Verschmelzungen verdoppelt sich der Wert (128+128=512)", "badge": "Krit" }, "golden": { "name": "Berührung des Meeresgotts", "desc": "Jede Verschmelzung hat 20% Chance, den Wert zu verdoppeln", "badge": "Glück" }, "hoarder": { "name": "Tiefsee-Rucksack", "desc": "Erweitert die Ausrüstung auf 7 Plätze; alle 100 Züge eine Wahl", "badge": "Horten" } },
-  "items": { "bomb": { "name": "Tiefenbombe", "desc": "Sprenge die Kreatur auf einem gewählten Feld" }, "shuffle": { "name": "Strömungs-Shuffle", "desc": "Ordne alle Felder zufällig neu an" }, "undo": { "name": "Rückströmung", "desc": "Mache deinen letzten Zug rückgängig" }, "double": { "name": "Druck-Boost", "desc": "Nächster Verschmelzungswert ×2" }, "amplify": { "name": "Wachstumshormon", "desc": "Verdopple eine Kreatur ≤256" }, "gamble": { "name": "Tiefen-Wette", "desc": "50% entwickeln / 50% verschwinden (≤1024)" }, "joker": { "name": "Tiefsee-Geist", "desc": "Setze ein Geisterteil; verschmilzt mit ≤2048" }, "yolo": { "name": "Abgrund-Wette", "desc": "25% entwickeln, 75% verschwinden (beliebige Kreatur)" }, "swap": { "name": "Strömungs-Tausch", "desc": "Tausche die Positionen zweier Kreaturen" }, "halve": { "name": "Druck-Schnitt", "desc": "Halbiere eine Kreatur ≥4" }, "freeze": { "name": "Tiefenfrost", "desc": "Keine neue Kreatur für die nächsten 5 Züge" } },
-  "envs": { "normal": { "name": "Ruhige See", "desc": "Normales Tauchen, gleichmäßige Strömungen" }, "storm": { "name": "Meeresgrund-Strudel", "desc": "20 Züge; alle 5 Züge stürmt eine Garnele herein" }, "fog": { "name": "Tintenfisch-Patrouille", "desc": "20 Züge; 3 zufällige Felder von Tinte verdeckt" }, "overtime": { "name": "Netz-Sperre", "desc": "15 Züge; sperrt pro Zug 1 Feld für 3 Züge" }, "bonus": { "name": "Schatz-Welle", "desc": "10 Züge; Punkte ×1,5" }, "gravity": { "name": "Gezeiten-Umkehr", "desc": "15 Züge; oben/unten vertauscht" }, "fogenv": { "name": "Tiefer Nebel", "desc": "15 Züge; 4 zufällige Felder verdunkeln sich" }, "valx2": { "name": "Evolutions-Rausch", "desc": "10 Züge; Verschmelzungswert verdoppelt" }, "scorex2": { "name": "Doppelte Blasen", "desc": "10 Züge; Verschmelzungspunkte ×2" } },
-  "achievements": { "32": { "title": "Zertifizierter Taucher", "desc": "Endlich den Taucheranzug angelegt!" }, "128": { "title": "Blauwal getroffen", "desc": "Er warf dir einen Blick zu und schwamm davon" }, "256": { "title": "Der weiße Hai lässt dich ziehen", "desc": "Der Weiße Hai findet dich nicht fett genug" }, "1024": { "title": "Tiefen-Entdecker", "desc": "Im Dunkeln nur das Geräusch des Sauerstoffs" }, "2048": { "title": "Bezwinger des Abgrunds", "desc": "Der ultimative Tiefsee-Erfolg!" } },
-  "taunts": [ "Wieder ein schöner Tag, um in die Tiefe zu sinken", "Bis 2048 verschmelzen? So schwer wie auftauchen", "So knapp! Jedes einzelne Mal", "Ein Fisch schaut dich an; du tust so, als würdest du schwimmen", "Erste Meeresregel: Finde einen größeren Fisch", "Wenig Sauerstoff, aber dein Verschmelzen läuft heiß", "Es ist kein Sinken, es ist ein strategischer Abstieg", "Eine misslungene Verschmelzung ist okay — der Sauerstoff ist eh fast leer", "Das Leben ist wie die Tiefe: je mehr du verschmilzt, desto tiefer", "Scheitern ist die Mutter des Erfolgs; Shuffeln der Vater des Auftauchens", "Das Schicksal gab dir kleine Fische — aber du kannst verschmelzen", "Atme tief ein… Moment, ist genug Sauerstoff da?", "Los, Taucher, finde auch heute einen größeren Fisch", "Der Wal sagt geh 2000 m; ich sage verschmilz bis 2048", "Der Druck steigt wieder — verschmilz eine Runde zum Abkühlen", "Das Ende des Universums ist der Meeresgrund", "Ecken-Taktik: Schieb den großen Fisch in die Ecke", "Langsam ist okay; ein volles Feld ist der Feind", "Genau jetzt vollbringst du ein Tiefsee-Wunder", "Das Feld darf voll sein, der Sauerstoff nicht leer" ],
-  "levels": [ { "name": "Erster Schnorchel", "winTitle": "Sicher aufgetaucht!", "winSub": "Den Oktopus getroffen — deine Tauchreise beginnt!", "loseTitle": "Fast ertrunken!", "loseSub": "Versuch es nochmal — diesmal schwimmst du zurück ans Ufer!" }, { "name": "Korallenriff", "winTitle": "Durchs Riff!", "winSub": "Einen Riesenkalmar verschmolzen — jetzt ein Profi-Taucher!", "loseTitle": "Jedes Mal stärker!", "loseSub": "Ein volles Feld ist okay — so trainieren Profis!" }, { "name": "Hinab in den Abgrund", "winTitle": "Abgrund bezwungen!", "winSub": "Legendärer Taucher — Erfolgsrate <0,1%!", "loseTitle": "Du bist schon großartig!", "loseSub": "Wer so tief kommt, ist ein Held — versuch es nochmal!" }, { "name": "Endloser Abgrund", "winTitle": null, "winSub": null, "loseTitle": "Legendärer Taucher!", "loseSub": "So weit zu kommen macht dich zum Tiefsee-Meister!" } ],
+  "lang": {
+    "name": "Deutsch",
+    "toggle": "Sprache"
+  },
+  "home": {
+    "title": "Abyss Merge",
+    "subtitle": "Werde ein Taucher",
+    "bestRecord": "Beste Tiefe  {best}",
+    "dive": "Abtauchen!",
+    "guide": "Anleitung",
+    "tip": "Erste Meeresregel: Finde einen größeren Fisch",
+    "keyHint": "← Pfeile / WASD zum Bewegen"
+  },
+  "ui": {
+    "score": "Tiefe",
+    "steps": "Züge",
+    "best": "Best",
+    "energy": "⚡ Energie",
+    "equip": "Ausrüstung",
+    "newGame": "🔄 Neu tauchen",
+    "adGear": "📺 Ad-Gear",
+    "empty": "—",
+    "stepsLeft": "{n} übrig",
+    "ghost": "?"
+  },
+  "talentSelect": {
+    "title": "🐚 Wähle ein Talent",
+    "level": "Level: {name}",
+    "skip": "🎲 Nackt tauchen"
+  },
+  "levelIntro": {
+    "tutorialTitle": "Tauchanleitung für Anfänger",
+    "tutorialStart": "Verstanden, los!",
+    "start": "Tauchgang starten!",
+    "levelN": "Level {n}",
+    "targetLabel": "Ziel",
+    "targetVal": "Bis {name} verschmelzen ({val})",
+    "targetEndless": "Endloser Abgrund — tauche so tief du kannst",
+    "sizeLabel": "Feldgröße",
+    "initLabel": "Startkreatur",
+    "initVal": "Feld beginnt mit {name} ({val})",
+    "diffLabel": "Schwierigkeit",
+    "diffHard": "Schwer — häufigere Meeresereignisse",
+    "tutorial": [
+      "👆 Wische oder nutze Pfeile / WASD, um alle Kreaturen zu schieben",
+      "🐟 Gleiche Kreaturen verschmelzen und entwickeln sich bei Berührung",
+      "🎯 Ziel: Bis zum Oktopus (Lv.5) verschmelzen, um zu gewinnen!",
+      "⚠️ Füllt sich das Meer, geht der Sauerstoff aus — Spiel vorbei",
+      "🎒 Nutze Talente und Ausrüstung, um tiefer zu tauchen"
+    ]
+  },
+  "win": {
+    "next": "Weiter →",
+    "continue": "Weiter tauchen →",
+    "restart": "Neustart",
+    "title": "Geschafft!"
+  },
+  "lose": {
+    "clear": "📺 Ad ansehen und ≤Lv.2 Kreaturen entfernen ({n})",
+    "noClear": "Keine ≤Lv.2 Kreaturen zum Entfernen",
+    "retry": "Erneut",
+    "restart": "Neustart",
+    "title": "Sauerstoff leer!"
+  },
+  "reward": {
+    "titleEnergy": "⚡ Energie voll!",
+    "titleHoarder": "🎒 Tiefsee-Rucksack!",
+    "titleShare": "Meeresgrund-Belohnung!",
+    "titleWin": "🎁 Sieg-Belohnung!",
+    "subEnergy": "Punktzahl bei 1000 — wähle eine Ausrüstung",
+    "subHoarder": "Ausrüstung alle 100 Züge",
+    "subShare": "Ausrüstung wählen ({n} übrig)",
+    "subWin": "Wähle Ausrüstung fürs nächste Level",
+    "skip": "Überspringen, keine Ausrüstung"
+  },
+  "info": {
+    "title": "Spielanleitung",
+    "tabs": {
+      "talent": "Talente",
+      "item": "Ausrüstung",
+      "env": "Meer"
+    },
+    "privacy": "🛡 Datenschutz-Optionen",
+    "privacyNative": "Nur in der installierten App verfügbar"
+  },
+  "frag": {
+    "common": "🪨 Gewöhnliche Scherbe",
+    "rare": "💎 Seltene Scherbe",
+    "epic": "🔮 Epische Scherbe",
+    "claimed": "✅ Heutige Scherbe erhalten",
+    "available": "{label} ×1  — gewinne, um sie zu verdienen!"
+  },
+  "ads": {
+    "simWatch": "(Simulierte Ad) Belohnungsvideo ansehen für die Belohnung?",
+    "simInterstitial": "(Simulierte Interstitial-Ad) Tippe OK zum Schließen"
+  },
+  "float": {
+    "crit": "⚡ Druck-Krit! → {val}",
+    "doubleItem": "⚡ Doppelte Ausrüstung! → {val}",
+    "golden": "✨ Gunst des Meeresgotts! → {val}",
+    "freezeEnd": "⏸️ Tiefenfrost beendet",
+    "envStart": "{icon} {name}!",
+    "envEnd": "{icon} {name} beendet",
+    "haveItem": "{icon} {name} schon vorhanden, verworfen",
+    "bagFull": "🎒 Ausrüstung voll, verworfen",
+    "bombArm": "💣 Tippe auf ein Feld zum Zünden!",
+    "bombCancel": "Bombe abgebrochen",
+    "cancel": "Abgebrochen",
+    "tipAmplify": "🔆 Tippe eine Kreatur ≤Lv.8 zum Entwickeln",
+    "tipGamble": "🎲 Tippe eine Kreatur ≤Lv.10 (50% entwickeln / 50% verschwinden)",
+    "tipYolo": "🎰 Tippe eine beliebige Kreatur (25% verdoppeln / 75% verschwinden)",
+    "tipHalve": "✂️ Tippe eine Kreatur ≥Lv.2 zum Halbieren",
+    "tipSwap": "🔁 Tippe die erste Kreatur",
+    "shuffle": "🔀 Strömungs-Shuffle!",
+    "noUndo": "Kein Zug zum Rückgängigmachen",
+    "undo": "⏪ Ein Zug rückgängig",
+    "double": "⚡ Nächste Verschmelzung verdoppelt!",
+    "freeze": "⏸️ Keine neue Kreatur für die nächsten 5 Züge!",
+    "noJokerSpace": "Kein freies Feld für den Geist",
+    "joker": "🃏 Der Tiefsee-Geist lauert!",
+    "fogNoBomb": "Von Tinte verdeckt — kein Zünden möglich!",
+    "bombHit": "💥 Versenkt!",
+    "amplifyDone": "🔆 {from}→{to}!",
+    "gambleWin": "🎲 Wette gewonnen! {from}→{to}",
+    "gambleLose": "🎲 Wette verloren! {val} verschwunden",
+    "yoloWin": "🎰 Großer Gewinn! {from}→{to}",
+    "yoloLose": "🎰 Weg! {val} verschwunden",
+    "halveDone": "✂️ {from}→{to}",
+    "swapSecond": "🔁 Tippe die zweite Kreatur",
+    "swapCancel": "🔁 Abgebrochen, tippe erneut die erste",
+    "swapDone": "🔁 Getauscht!",
+    "rewardGot": "{icon} {rarity} Ausrüstung erhalten: {name}",
+    "rewardBagFull": "🎒 Ausrüstung voll, {name} verworfen",
+    "clearSmall": "Alle ≤Lv.2 Kreaturen entfernt!",
+    "adNoReward": "Ad nicht beendet — keine Belohnung"
+  },
+  "rarity": {
+    "common": "Gewöhnlich",
+    "rare": "Selten",
+    "epic": "Abyssal"
+  },
+  "talents": {
+    "double": {
+      "name": "Druck-Krit",
+      "desc": "Alle 5 Verschmelzungen verdoppelt sich der Wert (Lv.7+Lv.7=Lv.9)",
+      "badge": "Krit"
+    },
+    "golden": {
+      "name": "Berührung des Meeresgotts",
+      "desc": "Jede Verschmelzung hat 20% Chance, den Wert zu verdoppeln",
+      "badge": "Glück"
+    },
+    "hoarder": {
+      "name": "Tiefsee-Rucksack",
+      "desc": "Erweitert die Ausrüstung auf 7 Plätze; alle 100 Züge eine Wahl",
+      "badge": "Horten"
+    }
+  },
+  "items": {
+    "bomb": {
+      "name": "Tiefenbombe",
+      "desc": "Sprenge die Kreatur auf einem gewählten Feld"
+    },
+    "shuffle": {
+      "name": "Strömungs-Shuffle",
+      "desc": "Ordne alle Felder zufällig neu an"
+    },
+    "undo": {
+      "name": "Rückströmung",
+      "desc": "Mache deinen letzten Zug rückgängig"
+    },
+    "double": {
+      "name": "Druck-Boost",
+      "desc": "Nächster Verschmelzungswert ×2"
+    },
+    "amplify": {
+      "name": "Wachstumshormon",
+      "desc": "Verdopple eine Kreatur ≤Lv.8"
+    },
+    "gamble": {
+      "name": "Tiefen-Wette",
+      "desc": "50% entwickeln / 50% verschwinden (≤Lv.10)"
+    },
+    "joker": {
+      "name": "Tiefsee-Geist",
+      "desc": "Setze ein Geisterteil; verschmilzt mit ≤Lv.11"
+    },
+    "yolo": {
+      "name": "Abgrund-Wette",
+      "desc": "25% entwickeln, 75% verschwinden (beliebige Kreatur)"
+    },
+    "swap": {
+      "name": "Strömungs-Tausch",
+      "desc": "Tausche die Positionen zweier Kreaturen"
+    },
+    "halve": {
+      "name": "Druck-Schnitt",
+      "desc": "Halbiere eine Kreatur ≥Lv.2"
+    },
+    "freeze": {
+      "name": "Tiefenfrost",
+      "desc": "Keine neue Kreatur für die nächsten 5 Züge"
+    }
+  },
+  "envs": {
+    "normal": {
+      "name": "Ruhige See",
+      "desc": "Normales Tauchen, gleichmäßige Strömungen"
+    },
+    "storm": {
+      "name": "Meeresgrund-Strudel",
+      "desc": "20 Züge; alle 5 Züge stürmt eine Garnele herein"
+    },
+    "fog": {
+      "name": "Tintenfisch-Patrouille",
+      "desc": "20 Züge; 3 zufällige Felder von Tinte verdeckt"
+    },
+    "overtime": {
+      "name": "Netz-Sperre",
+      "desc": "15 Züge; sperrt pro Zug 1 Feld für 3 Züge"
+    },
+    "bonus": {
+      "name": "Schatz-Welle",
+      "desc": "10 Züge; Punkte ×1,5"
+    },
+    "gravity": {
+      "name": "Gezeiten-Umkehr",
+      "desc": "15 Züge; oben/unten vertauscht"
+    },
+    "fogenv": {
+      "name": "Tiefer Nebel",
+      "desc": "15 Züge; 4 zufällige Felder verdunkeln sich"
+    },
+    "valx2": {
+      "name": "Evolutions-Rausch",
+      "desc": "10 Züge; Verschmelzungswert verdoppelt"
+    },
+    "scorex2": {
+      "name": "Doppelte Blasen",
+      "desc": "10 Züge; Verschmelzungspunkte ×2"
+    }
+  },
+  "achievements": {
+    "32": {
+      "title": "Zertifizierter Taucher",
+      "desc": "Endlich den Taucheranzug angelegt!"
+    },
+    "128": {
+      "title": "Blauwal getroffen",
+      "desc": "Er warf dir einen Blick zu und schwamm davon"
+    },
+    "256": {
+      "title": "Der weiße Hai lässt dich ziehen",
+      "desc": "Der Weiße Hai findet dich nicht fett genug"
+    },
+    "1024": {
+      "title": "Tiefen-Entdecker",
+      "desc": "Im Dunkeln nur das Geräusch des Sauerstoffs"
+    },
+    "2048": {
+      "title": "Bezwinger des Abgrunds",
+      "desc": "Der ultimative Tiefsee-Erfolg!"
+    }
+  },
+  "taunts": [
+    "Wieder ein schöner Tag, um in die Tiefe zu sinken",
+    "Bis Lv.11 entwickeln? So schwer wie auftauchen",
+    "So knapp! Jedes einzelne Mal",
+    "Ein Fisch schaut dich an; du tust so, als würdest du schwimmen",
+    "Erste Meeresregel: Finde einen größeren Fisch",
+    "Wenig Sauerstoff, aber dein Verschmelzen läuft heiß",
+    "Es ist kein Sinken, es ist ein strategischer Abstieg",
+    "Eine misslungene Verschmelzung ist okay — der Sauerstoff ist eh fast leer",
+    "Das Leben ist wie die Tiefe: je mehr du verschmilzt, desto tiefer",
+    "Scheitern ist die Mutter des Erfolgs; Shuffeln der Vater des Auftauchens",
+    "Das Schicksal gab dir kleine Fische — aber du kannst verschmelzen",
+    "Atme tief ein… Moment, ist genug Sauerstoff da?",
+    "Los, Taucher, finde auch heute einen größeren Fisch",
+    "Der Wal sagt geh 2000 m; ich sage entwickle bis Lv.11",
+    "Der Druck steigt wieder — verschmilz eine Runde zum Abkühlen",
+    "Das Ende des Universums ist der Meeresgrund",
+    "Ecken-Taktik: Schieb den großen Fisch in die Ecke",
+    "Langsam ist okay; ein volles Feld ist der Feind",
+    "Genau jetzt vollbringst du ein Tiefsee-Wunder",
+    "Das Feld darf voll sein, der Sauerstoff nicht leer"
+  ],
+  "levels": [
+    {
+      "name": "Erster Schnorchel",
+      "winTitle": "Sicher aufgetaucht!",
+      "winSub": "Den Oktopus getroffen — deine Tauchreise beginnt!",
+      "loseTitle": "Fast ertrunken!",
+      "loseSub": "Versuch es nochmal — diesmal schwimmst du zurück ans Ufer!"
+    },
+    {
+      "name": "Korallenriff",
+      "winTitle": "Durchs Riff!",
+      "winSub": "Einen Riesenkalmar verschmolzen — jetzt ein Profi-Taucher!",
+      "loseTitle": "Jedes Mal stärker!",
+      "loseSub": "Ein volles Feld ist okay — so trainieren Profis!"
+    },
+    {
+      "name": "Hinab in den Abgrund",
+      "winTitle": "Abgrund bezwungen!",
+      "winSub": "Legendärer Taucher — Erfolgsrate <0,1%!",
+      "loseTitle": "Du bist schon großartig!",
+      "loseSub": "Wer so tief kommt, ist ein Held — versuch es nochmal!"
+    },
+    {
+      "name": "Endloser Abgrund",
+      "winTitle": null,
+      "winSub": null,
+      "loseTitle": "Legendärer Taucher!",
+      "loseSub": "So weit zu kommen macht dich zum Tiefsee-Meister!"
+    }
+  ],
   "skins": {
-    "deep": { "name": "Mitternachtstiefe", "labels": { "2": "Krill", "4": "Qualle", "8": "Clownfisch", "16": "Kugelfisch", "32": "Oktopus", "64": "Seelöwe", "128": "Beluga", "256": "Weißer Hai", "512": "Riesenkalmar", "1024": "Anglerfisch", "2048": "Abgrund-Dämon", "4096": "Legendenwal", "8192": "Tiefsee-Gott", "16384": "Meeresmythos", "32768": "Tauchmeister", "65536": "Der Meeresgott weint", "131072": "Der Ozean verblasst", "262144": "Ruhe auf dem Meeresgrund", "524288": "Kosmischer Abgrund", "1048576": "Grund der Zeit", "2097152": "Jenseits der Tiefe", "4194304": "Unbeschreiblich", "8388608": "Du hast gewonnen, Fisch", "16777216": "Eins mit dem Meer" } },
-    "coral": { "name": "Korallen-Sonnenlicht", "labels": { "2": "Zwergseepferdchen", "4": "Anemone", "8": "Clownfisch", "16": "Falterfisch", "32": "Kaiserfisch", "64": "Meeresschildkröte", "128": "Delfin", "256": "Walhai", "512": "Roter Thun", "1024": "Segelfisch", "2048": "Korallenkönigin", "4096": "Hüter des Ozeans", "8192": "Korallen-Legende", "16384": "Gott der warmen Strömung", "32768": "Korallen-Meister", "65536": "Tropischer Meeresgott", "131072": "Ozean-Heimat", "262144": "Korallen ewig", "524288": "Seichter Kosmos", "1048576": "Zeit-Riff", "2097152": "Jenseits der Strömungen", "4194304": "Grenzenlose Korallen", "8388608": "Du hast gewonnen, Riff", "16777216": "Licht zum Meer" } },
-    "polar": { "name": "Polare Aurora", "labels": { "2": "Krill", "4": "Eisfisch", "8": "Robbe", "16": "Dugong", "32": "Narwal", "64": "Beluga", "128": "Zwergwal", "256": "Orca", "512": "Grönlandwal", "1024": "Grönlandhai", "2048": "Aurora-Bestie", "4096": "Eisgott", "8192": "Polargott", "16384": "Aurora-Legende", "32768": "Eismeer-Meister", "65536": "Arktischer Meeresgott", "131072": "Gletscher verschwunden", "262144": "Polar ewig", "524288": "Polarnacht-Kosmos", "1048576": "Zeit erstarrt", "2097152": "Jenseits des Pols", "4194304": "Nicht zu frieren", "8388608": "Du hast gewonnen, Eis", "16777216": "Licht zum Pol" } },
-    "abyss": { "name": "Abgrund-Leuchten", "labels": { "2": "Leucht-Krill", "4": "Laternenfisch", "8": "Leucht-Qualle", "16": "Tiefsee-Barsch", "32": "Zitteraal", "64": "Anglerfisch", "128": "Riesenkalmar", "256": "Tiefsee-Krabbe", "512": "Geisterhai", "1024": "Drachenfisch", "2048": "Abgrund-Fürst", "4096": "Dunkler Gott", "8192": "Leucht-Legende", "16384": "Abgrund-Meister", "32768": "Leucht-Gott", "65536": "Abgrund-Meeresgott", "131072": "Ozean-Dunkel", "262144": "Leuchten ewig", "524288": "Abgrund-Kosmos", "1048576": "Tiefe Zeit", "2097152": "Jenseits des Dunkels", "4194304": "Unbeschreiblich", "8388608": "Du hast gewonnen, Abgrund", "16777216": "Licht zum Abgrund" } }
+    "deep": {
+      "name": "Mitternachtstiefe",
+      "labels": {
+        "2": "Krill",
+        "4": "Qualle",
+        "8": "Clownfisch",
+        "16": "Kugelfisch",
+        "32": "Oktopus",
+        "64": "Seelöwe",
+        "128": "Beluga",
+        "256": "Weißer Hai",
+        "512": "Riesenkalmar",
+        "1024": "Anglerfisch",
+        "2048": "Abgrund-Dämon",
+        "4096": "Legendenwal",
+        "8192": "Tiefsee-Gott",
+        "16384": "Meeresmythos",
+        "32768": "Tauchmeister",
+        "65536": "Der Meeresgott weint",
+        "131072": "Der Ozean verblasst",
+        "262144": "Ruhe auf dem Meeresgrund",
+        "524288": "Kosmischer Abgrund",
+        "1048576": "Grund der Zeit",
+        "2097152": "Jenseits der Tiefe",
+        "4194304": "Unbeschreiblich",
+        "8388608": "Du hast gewonnen, Fisch",
+        "16777216": "Eins mit dem Meer"
+      }
+    },
+    "coral": {
+      "name": "Korallen-Sonnenlicht",
+      "labels": {
+        "2": "Zwergseepferdchen",
+        "4": "Anemone",
+        "8": "Clownfisch",
+        "16": "Falterfisch",
+        "32": "Kaiserfisch",
+        "64": "Meeresschildkröte",
+        "128": "Delfin",
+        "256": "Walhai",
+        "512": "Roter Thun",
+        "1024": "Segelfisch",
+        "2048": "Korallenkönigin",
+        "4096": "Hüter des Ozeans",
+        "8192": "Korallen-Legende",
+        "16384": "Gott der warmen Strömung",
+        "32768": "Korallen-Meister",
+        "65536": "Tropischer Meeresgott",
+        "131072": "Ozean-Heimat",
+        "262144": "Korallen ewig",
+        "524288": "Seichter Kosmos",
+        "1048576": "Zeit-Riff",
+        "2097152": "Jenseits der Strömungen",
+        "4194304": "Grenzenlose Korallen",
+        "8388608": "Du hast gewonnen, Riff",
+        "16777216": "Licht zum Meer"
+      }
+    },
+    "polar": {
+      "name": "Polare Aurora",
+      "labels": {
+        "2": "Krill",
+        "4": "Eisfisch",
+        "8": "Robbe",
+        "16": "Dugong",
+        "32": "Narwal",
+        "64": "Beluga",
+        "128": "Zwergwal",
+        "256": "Orca",
+        "512": "Grönlandwal",
+        "1024": "Grönlandhai",
+        "2048": "Aurora-Bestie",
+        "4096": "Eisgott",
+        "8192": "Polargott",
+        "16384": "Aurora-Legende",
+        "32768": "Eismeer-Meister",
+        "65536": "Arktischer Meeresgott",
+        "131072": "Gletscher verschwunden",
+        "262144": "Polar ewig",
+        "524288": "Polarnacht-Kosmos",
+        "1048576": "Zeit erstarrt",
+        "2097152": "Jenseits des Pols",
+        "4194304": "Nicht zu frieren",
+        "8388608": "Du hast gewonnen, Eis",
+        "16777216": "Licht zum Pol"
+      }
+    },
+    "abyss": {
+      "name": "Abgrund-Leuchten",
+      "labels": {
+        "2": "Leucht-Krill",
+        "4": "Laternenfisch",
+        "8": "Leucht-Qualle",
+        "16": "Tiefsee-Barsch",
+        "32": "Zitteraal",
+        "64": "Anglerfisch",
+        "128": "Riesenkalmar",
+        "256": "Tiefsee-Krabbe",
+        "512": "Geisterhai",
+        "1024": "Drachenfisch",
+        "2048": "Abgrund-Fürst",
+        "4096": "Dunkler Gott",
+        "8192": "Leucht-Legende",
+        "16384": "Abgrund-Meister",
+        "32768": "Leucht-Gott",
+        "65536": "Abgrund-Meeresgott",
+        "131072": "Ozean-Dunkel",
+        "262144": "Leuchten ewig",
+        "524288": "Abgrund-Kosmos",
+        "1048576": "Tiefe Zeit",
+        "2097152": "Jenseits des Dunkels",
+        "4194304": "Unbeschreiblich",
+        "8388608": "Du hast gewonnen, Abgrund",
+        "16777216": "Licht zum Abgrund"
+      }
+    }
   }
 }

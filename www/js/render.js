@@ -16,10 +16,19 @@ function initCanvas() {
   canvas.style.height = H + 'px';
   ctx = canvas.getContext('2d');
   ctx.scale(dpr, dpr);
-  GameGlobal.SW = W; GameGlobal.SH = H;
+  // On tablets the UI would otherwise stretch into a wide, empty-looking phone layout.
+  // Everything is laid out in a centred column of at most COL_MAX; the scene background
+  // still covers the full screen. SW is the column width — all draw code works in column
+  // space, and renderAll translates by OX. hitTest undoes that translation.
+  const COL_MAX = 560;
+  const COL = Math.min(W, COL_MAX);
+  GameGlobal.screenW = W; GameGlobal.screenH = H;
+  GameGlobal.SW = COL; GameGlobal.SH = H;
+  GameGlobal.OX = Math.round((W - COL) / 2);
   GameGlobal.safeTop = 44; GameGlobal.safeBottom = 0;
 }
 function hitTest(tx, ty) {
+  tx -= (GameGlobal.OX || 0);   // page coords → column space
   for (let i = hitAreas.length - 1; i >= 0; i--) {
     const h = hitAreas[i];
     if (tx >= h.x && tx <= h.x + h.w && ty >= h.y && ty <= h.y + h.h) return h;
@@ -63,14 +72,14 @@ const CreatureArt = (() => {
   }
   return { load, get(v){ return imgs[v]; } };
 })();
-// Draw creature image filling the tile + a small value badge (top-left). Returns false if no art.
+// Draw creature image filling the tile + a small tier badge (top-left). Returns false if no art.
 function drawCreatureTile(tx,ty,ts,v,style){
   const im = CreatureArt.get(v);
   if (!im) return false;
   const pad = ts*0.04, size = ts - pad*2;
   ctx.drawImage(im, tx+pad, ty+pad, size, size);
-  const disp = v>=10000 ? `${(v/1000).toFixed(1).replace(/\.0$/,'')}k` : String(v);
-  const fs = Math.max(9, Math.round(ts*0.17));
+  const disp = tierDisp(v);
+  const fs = Math.max(9, Math.round(ts*0.15));
   ctx.font = `bold ${fs}px sans-serif`;
   const bw = ctx.measureText(disp).width + 8, bh = fs + 5, bx = tx+4, by = ty+4;
   fillRR(bx,by,bw,bh,bh/2,style.fg);
@@ -126,10 +135,14 @@ function layout(){
   const itemH=56,tauntH=32,btnH=44;
   const topH=topSafe+headerH+4+energyH+4+envH+4+talentH+(hasTalent?4:0)+itemH+6;
   const botH=tauntH+4+btnH+botSafe;
-  const boardAvail=Math.min(SW-PAD*2,SH-topH-botH);
+  const availH=SH-topH-botH;
+  const boardAvail=Math.min(SW-PAD*2,availH);
   const boardSize=Math.max(boardAvail,160);
   const boardX=PAD+((SW-PAD*2)-boardSize)/2;
-  return{PAD,SW,SH,headerY:topSafe,headerH,energyY:topSafe+headerH+4,energyH,envY:topSafe+headerH+4+energyH+4,envH,talentY:topSafe+headerH+4+energyH+4+envH+4,talentH,itemY:topSafe+headerH+4+energyH+4+envH+4+talentH+(hasTalent?4:0),itemH,boardX,boardY:topH,boardSize,tauntY:SH-botSafe-btnH-4-tauntH,tauntH,btnY:SH-botSafe-btnH,btnH};
+  // when the column is narrower than the free height (tall screens / tablets), the board is
+  // width-capped — centre it in the leftover vertical space instead of leaving a gap at the bottom
+  const boardY=topH+Math.max(0,(availH-boardSize)/2);
+  return{PAD,SW,SH,headerY:topSafe,headerH,energyY:topSafe+headerH+4,energyH,envY:topSafe+headerH+4+energyH+4,envH,talentY:topSafe+headerH+4+energyH+4+envH+4,talentH,itemY:topSafe+headerH+4+energyH+4+envH+4+talentH+(hasTalent?4:0),itemH,boardX,boardY,boardSize,tauntY:SH-botSafe-btnH-4-tauntH,tauntH,btnY:SH-botSafe-btnH,btnH};
 }
 function drawHeader(L){const{PAD,SW,headerY:y,headerH:h}=L;fillRR(PAD,y,SW-PAD*2,h,16,C.surface);strokeRR(PAD,y,SW-PAD*2,h,16,C.border);const boxes=[{label:T('ui.score'),val:G.score,color:C.accent},{label:T('ui.steps'),val:G.stepCount,color:C.cyan},{label:T('ui.best'),val:G.best,color:C.accent2}];const bw=(SW-PAD*2-20)/3;boxes.forEach((b,i)=>{const bx=PAD+8+i*(bw+2);const cy=y+h/2;txt(b.label,bx+bw/2,cy-10,C.muted,'10px sans-serif');txt(String(b.val),bx+bw/2,cy+10,b.color,'bold 20px sans-serif');});}
 function drawEnergyRow(L){const{PAD,SW,energyY:y,energyH:h}=L;const pct=Math.min(1,(G.energyScore||0)/1000);
@@ -141,7 +154,7 @@ function drawEnergyRow(L){const{PAD,SW,energyY:y,energyH:h}=L;const pct=Math.min
 function drawEnvBar(L){const{PAD,SW,envY:y,envH:h}=L;const env=G.env||ENVS[0];const envColors={normal:'#f2faff',storm:'#e2edf7',fog:'#e9eef7',overtime:'#f9e8ee',gravity:'#e7eff8',fogenv:'#ecf1f9',bonus:'#e6f7ee',valx2:'#fff0e2',scorex2:'#fff4d8'};fillRR(PAD,y,SW-PAD*2,h,16,envColors[env.id]||C.surface);strokeRR(PAD,y,SW-PAD*2,h,16,C.border);drawEnvIcon(env.id,env.icon||'🌊',PAD+20,y+h/2,Math.min(h-6,30),C.text,'22px sans-serif');txtL(env.name,PAD+38,y+14,C.text,'bold 13px sans-serif');txtL(env.desc,PAD+38,y+30,C.muted,'10px sans-serif');if(env.steps>0&&G.phase==='PLAYING'){const left=Math.max(0,env.steps-(G.stepCount-G.envStartStep));const isGood=['bonus','valx2','scorex2'].includes(env.id);txt(T('ui.stepsLeft',{n:left}),SW-PAD-16,y+h/2,isGood?C.success:C.danger,'bold 16px sans-serif');}}
 function drawTalentBar(L){if(!L.talentH)return;const{PAD,talentY:y,talentH:h}=L;let x=PAD;G.talents.forEach(t=>{const lbl=`${t.icon} ${t.name}`;ctx.font='11px sans-serif';const tw=ctx.measureText(lbl).width+20;fillRR(x,y,tw,h,14,'rgba(102,85,255,0.1)');strokeRR(x,y,tw,h,14,C.purple);txt(lbl,x+tw/2,y+h/2,C.purple,'11px sans-serif');x+=tw+6;});}
 function drawItemBar(L){const{PAD,SW,itemY:y,itemH:h}=L;txtL(T('ui.equip'),PAD,y+h/2,C.muted,'10px sans-serif');const slots=G.itemSlots||4;const slotW=52,gap=6;const startX=PAD+32;const rarityColors={common:C.success,rare:C.purple,epic:C.accent};for(let i=0;i<slots;i++){const sx=startX+i*(slotW+gap);const item=G.items[i];const isActive=(G.bombMode&&G.bombSlot===i)||G.itemMode?.slotIdx===i;const border=isActive?C.accent:(item?(rarityColors[item.rarity]||C.border):C.border);fillRR(sx,y+2,slotW,h-4,14,C.surface);strokeRR(sx,y+2,slotW,h-4,14,border,isActive?2:1);if(item){drawItemIcon(item.id,item.icon,sx+slotW/2,y+18,34,C.text,'22px sans-serif');txt(item.name,sx+slotW/2,y+h-12,C.muted,'7px sans-serif');}else{txt(T('ui.empty'),sx+slotW/2,y+h/2,C.border,'16px sans-serif');}addHit(sx,y+2,slotW,h-4,'USE_ITEM',{slotIdx:i});}}
-function drawBoard(L){CreatureArt.load(typeof activeSkinId!=='undefined'?activeSkinId:'deep');const{boardX:bx,boardY:by,boardSize:bs}=L;const s=G.size,PAD2=8,GAP=6;const ts=(bs-PAD2*2-GAP*(s-1))/s;const tr=Math.min(18,ts*0.28);fillRR(bx,by,bs,bs,20,C.surface);strokeRR(bx,by,bs,bs,20,C.border);for(let r=0;r<s;r++){for(let c=0;c<s;c++){const tx=bx+PAD2+c*(ts+GAP);const ty=by+PAD2+r*(ts+GAP);const v=G.board[r][c];const idx=r*s+c;const st=G.specialTiles[idx];const isFog=st?.type==='fog'&&v!==0;const isLk=st?.type==='locked';let style=tileStyle(isFog?null:v);if(isFog)style={bg:'#dbe8f2',fg:'#9cc0d6'};fillRR(tx,ty,ts,ts,tr,style.bg);if(isLk)ctx.globalAlpha=0.4;let hlColor=null;if(G.bombMode&&v&&v!==0)hlColor=C.danger;if(G.itemMode?.type==='amplify'&&v>0&&v<=256)hlColor=C.success;if(G.itemMode?.type==='gamble'&&v>0&&v<=1024)hlColor=C.accent;if(G.itemMode?.type==='yolo'&&v&&v>0)hlColor=C.purple;if(G.itemMode?.type==='halve'&&v>=4)hlColor=C.accent;if(G.itemMode?.type==='swap'){const isFirst=G.swapState?.first?.r===r&&G.swapState?.first?.c===c;if(isFirst)hlColor=C.success;else if(v!==0)hlColor=C.purple;}if(hlColor){ctx.globalAlpha=0.9;strokeRR(tx,ty,ts,ts,tr,hlColor,2);ctx.globalAlpha=1;}if(v){if(isFog||v===-1||!drawCreatureTile(tx,ty,ts,v,style)){const disp=isFog?'？':(v===-1?T('ui.ghost'):(v>=10000?`${(v/1000).toFixed(1).replace(/\.0$/,'')}k`:String(v)));const digits=disp.length;const fs=digits<=2?ts*0.42:digits===3?ts*0.33:digits===4?ts*0.26:ts*0.2;txt(disp,tx+ts/2,ty+ts/2-(LABELS[v]?6:0),style.fg,`bold ${Math.round(fs)}px sans-serif`);if(!isFog&&LABELS[v])txt(LABELS[v],tx+ts/2,ty+ts-8,style.fg+'dd',`${Math.max(7,Math.round(ts*0.13))}px sans-serif`);}}ctx.globalAlpha=1;if(G.bombMode||G.itemMode)addHit(tx,ty,ts,ts,'TILE_CLICK',{r,c});}}}
+function drawBoard(L){CreatureArt.load(typeof activeSkinId!=='undefined'?activeSkinId:'deep');const{boardX:bx,boardY:by,boardSize:bs}=L;const s=G.size,PAD2=8,GAP=6;const ts=(bs-PAD2*2-GAP*(s-1))/s;const tr=Math.min(18,ts*0.28);fillRR(bx,by,bs,bs,20,C.surface);strokeRR(bx,by,bs,bs,20,C.border);for(let r=0;r<s;r++){for(let c=0;c<s;c++){const tx=bx+PAD2+c*(ts+GAP);const ty=by+PAD2+r*(ts+GAP);const v=G.board[r][c];const idx=r*s+c;const st=G.specialTiles[idx];const isFog=st?.type==='fog'&&v!==0;const isLk=st?.type==='locked';let style=tileStyle(isFog?null:v);if(isFog)style={bg:'#dbe8f2',fg:'#9cc0d6'};fillRR(tx,ty,ts,ts,tr,style.bg);if(isLk)ctx.globalAlpha=0.4;let hlColor=null;if(G.bombMode&&v&&v!==0)hlColor=C.danger;if(G.itemMode?.type==='amplify'&&v>0&&v<=256)hlColor=C.success;if(G.itemMode?.type==='gamble'&&v>0&&v<=1024)hlColor=C.accent;if(G.itemMode?.type==='yolo'&&v&&v>0)hlColor=C.purple;if(G.itemMode?.type==='halve'&&v>=4)hlColor=C.accent;if(G.itemMode?.type==='swap'){const isFirst=G.swapState?.first?.r===r&&G.swapState?.first?.c===c;if(isFirst)hlColor=C.success;else if(v!==0)hlColor=C.purple;}if(hlColor){ctx.globalAlpha=0.9;strokeRR(tx,ty,ts,ts,tr,hlColor,2);ctx.globalAlpha=1;}if(v){if(isFog||v===-1||!drawCreatureTile(tx,ty,ts,v,style)){const disp=isFog?'？':(v===-1?T('ui.ghost'):tierDisp(v));const digits=disp.length;const fs=digits<=2?ts*0.42:digits===3?ts*0.33:digits===4?ts*0.26:ts*0.2;txt(disp,tx+ts/2,ty+ts/2-(LABELS[v]?6:0),style.fg,`bold ${Math.round(fs)}px sans-serif`);if(!isFog&&LABELS[v])txt(LABELS[v],tx+ts/2,ty+ts-8,style.fg+'dd',`${Math.max(7,Math.round(ts*0.13))}px sans-serif`);}}ctx.globalAlpha=1;if(G.bombMode||G.itemMode)addHit(tx,ty,ts,ts,'TILE_CLICK',{r,c});}}}
 // Draw a single tile (bg + value + label) centered, optionally scaled — used by the move animation.
 function drawTileAt(tx,ty,ts,tr,v,scale,isFog){
   scale=scale||1;const style=isFog?{bg:'#dbe8f2',fg:'#9cc0d6'}:tileStyle(v);
@@ -150,7 +163,7 @@ function drawTileAt(tx,ty,ts,tr,v,scale,isFog){
   fillRR(tx,ty,ts,ts,tr,style.bg);
   if(v){
     if(isFog||v===-1||!drawCreatureTile(tx,ty,ts,v,style)){
-    const disp=isFog?'？':(v===-1?T('ui.ghost'):(v>=10000?`${(v/1000).toFixed(1).replace(/\.0$/,'')}k`:String(v)));
+    const disp=isFog?'？':(v===-1?T('ui.ghost'):tierDisp(v));
     const digits=disp.length;const fs=digits<=2?ts*0.42:digits===3?ts*0.33:digits===4?ts*0.26:ts*0.2;
     txt(disp,tx+ts/2,ty+ts/2-(!isFog&&LABELS[v]?6:0),style.fg,`bold ${Math.round(fs)}px sans-serif`);
     if(!isFog&&LABELS[v])txt(LABELS[v],tx+ts/2,ty+ts-8,style.fg+'dd',`${Math.max(7,Math.round(ts*0.13))}px sans-serif`);
@@ -192,7 +205,9 @@ function drawButtons(L){
   const totalFlex=btns.reduce((s,b)=>s+b.flex,0);const totalGap=6*(btns.length-1);const totalW=SW-PAD*2;let bx=PAD;
   btns.forEach(b=>{const bw=(totalW-totalGap)*(b.flex/totalFlex);const col=b.color||C.text;fillRR(bx,y,bw,h,14,C.surface);strokeRR(bx,y,bw,h,14,b.color?b.color:C.border);txt(b.label,bx+bw/2,y+h/2,col,'12px sans-serif');addHit(bx,y,bw,h,b.action,{});bx+=bw+6;});
 }
-function drawDim(){ctx.fillStyle=(typeof C!=='undefined'&&C.bg2)?'rgba(207,235,255,0.86)':'rgba(0,0,0,0.75)';ctx.fillRect(0,0,GameGlobal.SW,GameGlobal.SH);}
+// overlays are drawn in column space, so the dim must reach back across the OX margins
+function fillScreen(color){const ox=GameGlobal.OX||0;ctx.fillStyle=color;ctx.fillRect(-ox,0,GameGlobal.screenW||GameGlobal.SW,GameGlobal.screenH||GameGlobal.SH);}
+function drawDim(){fillScreen((typeof C!=='undefined'&&C.bg2)?'rgba(207,235,255,0.86)':'rgba(0,0,0,0.75)');}
 function drawTalentOverlay(L){drawDim();const SW=GameGlobal.SW,SH=GameGlobal.SH;const lv=LEVELS[G.levelIdx];txt(T('talentSelect.title'),SW/2,80,C.purple,'bold 18px sans-serif');txt(T('talentSelect.level',{name:lv.name}),SW/2,108,C.muted,'12px sans-serif');const cardW=SW-40,cardH=80;const startY=136;TALENTS.forEach((t,i)=>{const cy=startY+i*(cardH+10);fillRR(20,cy,cardW,cardH,12,C.surface2);strokeRR(20,cy,cardW,cardH,12,C.border);drawTalentIcon(t.id,t.icon,20+34,cy+cardH/2,52,C.text,'28px sans-serif');txtL(t.name,20+58,cy+22,C.text,'bold 14px sans-serif');txtLWrap(t.desc,20+58,cy+50,cardW-140,C.muted,'11px sans-serif',14);const badgeW=44;fillRR(20+cardW-badgeW-10,cy+cardH/2-10,badgeW,20,10,'rgba(102,85,255,0.2)');txt(t.badge,20+cardW-badgeW/2-10,cy+cardH/2,C.purple,'10px sans-serif');addHit(20,cy,cardW,cardH,'SELECT_TALENT',{talent:t});});const skipY=startY+TALENTS.length*(cardH+10);fillRR(20,skipY,cardW,42,10,C.surface);strokeRR(20,skipY,cardW,42,10,C.border);txt(T('talentSelect.skip'),SW/2,skipY+21,C.muted,'13px sans-serif');addHit(20,skipY,cardW,42,'SELECT_TALENT',{talent:null});}
 function getFragRewardText(levelIdx){
   const FRAG_RARITY=['common','rare','epic'];
@@ -209,7 +224,7 @@ function getFragRewardText(levelIdx){
 }
 function drawWinOverlay(){drawDim();const SW=GameGlobal.SW,SH=GameGlobal.SH;const lv=LEVELS[G.levelIdx];txt('🏆',SW/2,SH/2-110,C.text,'44px sans-serif');txt(lv.winTitle||T('win.title'),SW/2,SH/2-62,C.success,'bold 22px sans-serif');txt(lv.winSub||'',SW/2,SH/2-34,C.muted,'12px sans-serif');const fragInfo=getFragRewardText(G.levelIdx);if(fragInfo){const bw=220,bh=32,bx=SW/2-bw/2,by=SH/2-16;fillRR(bx,by,bw,bh,8,fragInfo.claimed?'rgba(20,20,20,0.7)':'rgba(0,80,40,0.5)');if(!fragInfo.claimed)strokeRR(bx,by,bw,bh,8,C.success);txt(fragInfo.text,SW/2,by+bh/2,fragInfo.color,'bold 12px sans-serif');}const isLast=lv.endless||G.levelIdx>=LEVELS.length-1;fillRR(SW/2-90,SH/2+24,180,44,10,C.accent);txt(isLast?T('win.continue'):T('win.next'),SW/2,SH/2+46,'#000','bold 14px sans-serif');addHit(SW/2-90,SH/2+24,180,44,'WIN_NEXT',{});const btnW=180;fillRR(SW/2-90,SH/2+76,btnW,36,10,C.surface2);strokeRR(SW/2-90,SH/2+76,btnW,36,10,C.border);txt(T('win.restart'),SW/2,SH/2+94,C.text,'12px sans-serif');addHit(SW/2-90,SH/2+76,btnW,36,'NEW_GAME',{});}
 function drawLoseOverlay(){drawDim();const SW=GameGlobal.SW,SH=GameGlobal.SH;const lv=LEVELS[G.levelIdx];txt('😭',SW/2,SH/2-130,C.text,'44px sans-serif');txt(lv.loseTitle||T('lose.title'),SW/2,SH/2-82,C.danger,'bold 22px sans-serif');txt(lv.loseSub||'',SW/2,SH/2-54,C.muted,'12px sans-serif');const clearCount=G.board.flat().filter(v=>v>0&&v<=4).length;fillRR(SW/2-90,SH/2-28,180,40,10,clearCount>0?C.purple:C.border);txt(clearCount>0?T('lose.clear',{n:clearCount}):T('lose.noClear'),SW/2,SH/2-8,C.text,'bold 13px sans-serif');if(clearCount>0)addHit(SW/2-90,SH/2-28,180,40,'LOSE_SHARE_CLEAR',{});fillRR(SW/2-90,SH/2+20,180,40,10,C.danger);txt(T('lose.retry'),SW/2,SH/2+40,C.text,'bold 13px sans-serif');addHit(SW/2-90,SH/2+20,180,40,'LOSE_RETRY',{});fillRR(SW/2-90,SH/2+68,180,36,10,C.surface2);strokeRR(SW/2-90,SH/2+68,180,36,10,C.border);txt(T('lose.restart'),SW/2,SH/2+86,C.text,'12px sans-serif');addHit(SW/2-90,SH/2+68,180,36,'NEW_GAME',{});}
-function drawLevelIntro(){drawDim();const SW=GameGlobal.SW,SH=GameGlobal.SH;const lv=LEVELS[G.levelIdx];const isTutorial=G.levelIdx===0;if(isTutorial){txt(T('levelIntro.tutorialTitle'),SW/2,72,C.cyan,'bold 20px sans-serif');const steps=I18N.get('levelIntro.tutorial')||[];steps.forEach((s,i)=>{const y=108+i*54;fillRR(20,y,SW-40,44,10,C.surface);const icon=s.slice(0,2);const rest=s.slice(2).trim();txt(clean(icon),52,y+22,C.text,'18px sans-serif');txtL(rest,76,y+22,C.text,'13px sans-serif');});}else{txt(T('levelIntro.levelN',{n:lv.id}),SW/2,72,C.purple,'bold 13px sans-serif');txt(lv.name,SW/2,102,C.accent,'bold 22px sans-serif');fillRR(20,126,SW-40,1,0,C.border);const rows=[{label:T('levelIntro.targetLabel'),value:lv.target?T('levelIntro.targetVal',{val:lv.target,name:LABELS[lv.target]||lv.target}):T('levelIntro.targetEndless'),color:C.success},{label:T('levelIntro.sizeLabel'),value:`${lv.size} × ${lv.size}`,color:C.text}];if(lv.initTile)rows.push({label:T('levelIntro.initLabel'),value:T('levelIntro.initVal',{val:lv.initTile,name:LABELS[lv.initTile]||lv.initTile}),color:C.cyan});if(lv.hard)rows.push({label:T('levelIntro.diffLabel'),value:T('levelIntro.diffHard'),color:C.danger});rows.forEach((r,i)=>{const y=148+i*64;fillRR(20,y,SW-40,54,10,C.surface);txt(r.label,SW/2,y+16,C.muted,'11px sans-serif');txt(r.value,SW/2,y+38,r.color,'bold 13px sans-serif');});}const btnY=SH-100;fillRR(SW/2-90,btnY,180,46,12,isTutorial?C.cyan:C.success);txt(isTutorial?T('levelIntro.tutorialStart'):T('levelIntro.start'),SW/2,btnY+23,'#fff','bold 15px sans-serif');addHit(SW/2-90,btnY,180,46,'CONFIRM_START',{});}
+function drawLevelIntro(){drawDim();const SW=GameGlobal.SW,SH=GameGlobal.SH;const lv=LEVELS[G.levelIdx];const isTutorial=G.levelIdx===0;if(isTutorial){txt(T('levelIntro.tutorialTitle'),SW/2,72,C.cyan,'bold 20px sans-serif');const steps=I18N.get('levelIntro.tutorial')||[];steps.forEach((s,i)=>{const y=108+i*54;fillRR(20,y,SW-40,44,10,C.surface);const icon=s.slice(0,2);const rest=s.slice(2).trim();txt(clean(icon),52,y+22,C.text,'18px sans-serif');txtL(rest,76,y+22,C.text,'13px sans-serif');});}else{txt(T('levelIntro.levelN',{n:lv.id}),SW/2,72,C.purple,'bold 13px sans-serif');txt(lv.name,SW/2,102,C.accent,'bold 22px sans-serif');fillRR(20,126,SW-40,1,0,C.border);const rows=[{label:T('levelIntro.targetLabel'),value:lv.target?T('levelIntro.targetVal',{val:tierDisp(lv.target),name:LABELS[lv.target]||tierDisp(lv.target)}):T('levelIntro.targetEndless'),color:C.success},{label:T('levelIntro.sizeLabel'),value:`${lv.size} × ${lv.size}`,color:C.text}];if(lv.initTile)rows.push({label:T('levelIntro.initLabel'),value:T('levelIntro.initVal',{val:tierDisp(lv.initTile),name:LABELS[lv.initTile]||tierDisp(lv.initTile)}),color:C.cyan});if(lv.hard)rows.push({label:T('levelIntro.diffLabel'),value:T('levelIntro.diffHard'),color:C.danger});rows.forEach((r,i)=>{const y=148+i*64;fillRR(20,y,SW-40,54,10,C.surface);txt(r.label,SW/2,y+16,C.muted,'11px sans-serif');txt(r.value,SW/2,y+38,r.color,'bold 13px sans-serif');});}const btnY=SH-100;fillRR(SW/2-90,btnY,180,46,12,isTutorial?C.cyan:C.success);txt(isTutorial?T('levelIntro.tutorialStart'):T('levelIntro.start'),SW/2,btnY+23,'#fff','bold 15px sans-serif');addHit(SW/2-90,btnY,180,46,'CONFIRM_START',{});}
 function drawRewardOverlay(){drawDim();const SW=GameGlobal.SW,SH=GameGlobal.SH;const isEnergy=G.rewardCtx==='energy';const isHoarder=G.rewardCtx==='hoarder';const isShare=G.rewardCtx==='share';const titleY=100;const title=isEnergy?T('reward.titleEnergy'):isHoarder?T('reward.titleHoarder'):isShare?T('reward.titleShare'):T('reward.titleWin');const sub=isEnergy?T('reward.subEnergy'):isHoarder?T('reward.subHoarder'):isShare?T('reward.subShare',{n:G.sharePicksLeft}):T('reward.subWin');txt(title,SW/2,titleY,isShare?C.cyan:C.success,'bold 22px sans-serif');txt(sub,SW/2,titleY+26,C.muted,'12px sans-serif');const cardW=SW-40,cardH=76;const startY=titleY+56;const items=G.rewardItems||[];const rarityColors={common:C.success,rare:C.purple,epic:C.accent};items.forEach((item,i)=>{const cy=startY+i*(cardH+10);fillRR(20,cy,cardW,cardH,12,C.surface);strokeRR(20,cy,cardW,cardH,12,rarityColors[item.rarity]||C.border);drawItemIcon(item.id,item.icon,20+30,cy+cardH/2,40,C.text,'26px sans-serif');txtL(item.name,20+54,cy+20,C.text,'bold 13px sans-serif');const rc=rarityColors[item.rarity];txtR(item.rarityLabel,20+cardW-16,cy+20,rc,'bold 10px sans-serif');txtLWrap(item.desc,20+54,cy+50,cardW-74,C.muted,'10px sans-serif',12);addHit(20,cy,cardW,cardH,'REWARD_PICK',{item});});const skipY=startY+items.length*(cardH+10);txt(T('reward.skip'),SW/2,skipY+16,C.muted,'12px sans-serif');addHit(SW/2-80,skipY+2,160,28,'REWARD_SKIP',{});}
 function drawFloat(){if(!G.floatMsg)return;const SW=GameGlobal.SW,SH=GameGlobal.SH;ctx.font='bold 13px sans-serif';const tw=ctx.measureText(G.floatMsg).width+32;const fw=Math.min(tw,SW-40);const fh=42,fx=(SW-fw)/2,fy=SH/2-60;fillRR(fx,fy,fw,fh,14,C.bg2?'rgba(255,255,255,0.96)':'rgba(0,0,0,0.88)');strokeRR(fx,fy,fw,fh,14,C.border);txt(G.floatMsg,SW/2,fy+fh/2,C.text,'bold 13px sans-serif');}
 function drawAchievement(){if(!G.ach)return;const SW=GameGlobal.SW;const aw=SW-40,ah=60,ax=20,ay=20;fillRR(ax,ay,aw,ah,16,C.bg2?'#ffffff':'#001520');strokeRR(ax,ay,aw,ah,16,C.accent);txt(G.ach.icon,ax+28,ay+ah/2,C.text,'26px sans-serif');txtL(G.ach.title,ax+52,ay+18,C.accent,'bold 12px sans-serif');txtL(G.ach.desc,ax+52,ay+38,C.muted,'10px sans-serif');}
@@ -218,15 +233,17 @@ function drawHome(){
   txt(T('home.title'),cx,my-140,C.accent,'bold 34px sans-serif');
   txt(T('home.subtitle'),cx,my-100,C.purple,'bold 16px sans-serif');
   if(G.best>0){fillRR(cx-80,my-72,160,34,12,C.surface);strokeRR(cx-80,my-72,160,34,12,C.border);txt(T('home.bestRecord',{best:G.best}),cx,my-55,C.accent,'bold 13px sans-serif');}
-  const tiles=[2,4,8,16,32,64];const tileS=44,gap=8;const rowW=tiles.length*(tileS+gap)-gap;
-  tiles.forEach((v,i)=>{const{bg,fg}=tileStyle(v);const tx=cx-rowW/2+i*(tileS+gap);const ty=my-10;fillRR(tx,ty,tileS,tileS,13,bg);strokeRR(tx,ty,tileS,tileS,13,C.border);txt(String(v),tx+tileS/2,ty+tileS/2-(LABELS[v]?6:0),fg,'bold 14px sans-serif');if(LABELS[v])txt(LABELS[v],tx+tileS/2,ty+tileS-7,fg+'dd','7px sans-serif');});
+  CreatureArt.load(typeof activeSkinId!=='undefined'?activeSkinId:'deep');
+  // evolution preview: Lv.1 → Lv.6, art on top, creature name on its own strip below
+  const tiles=[2,4,8,16,32,64];const tileS=52,gap=8;const rowW=tiles.length*(tileS+gap)-gap;const artH=tileS-13;
+  tiles.forEach((v,i)=>{const{bg,fg}=tileStyle(v);const tx=cx-rowW/2+i*(tileS+gap);const ty=my-14;fillRR(tx,ty,tileS,tileS,13,bg);strokeRR(tx,ty,tileS,tileS,13,C.border);const im=CreatureArt.get(v);if(im)ctx.drawImage(im,tx+2,ty+1,tileS-4,artH);else txt(tierDisp(v),tx+tileS/2,ty+artH/2+2,fg,'bold 12px sans-serif');if(LABELS[v])txt(LABELS[v],tx+tileS/2,ty+tileS-6,fg+'dd','7px sans-serif');});
   fillRR(cx-100,my+56,200,52,20,C.accent);txt(T('home.dive'),cx,my+82,'#fff','bold 20px sans-serif');addHit(cx-100,my+56,200,52,'START_GAME',{});
   fillRR(cx-60,my+122,120,36,14,C.surface2);strokeRR(cx-60,my+122,120,36,14,C.border);txt(T('home.guide'),cx,my+140,C.muted,'12px sans-serif');addHit(cx-60,my+122,120,36,'OPEN_INFO',{});
   txt(T('home.tip'),cx,my+174,C.muted,'11px sans-serif');
   txt(T('home.keyHint'),cx,SH-20,C.muted,'10px sans-serif');
 }
 function drawInfoOverlay(){
-  const SW=GameGlobal.SW,SH=GameGlobal.SH;ctx.fillStyle=C.bg2?'rgba(224,241,251,0.97)':'rgba(0,0,0,0.92)';ctx.fillRect(0,0,SW,SH);
+  const SW=GameGlobal.SW,SH=GameGlobal.SH;fillScreen(C.bg2?'rgba(224,241,251,0.97)':'rgba(0,0,0,0.92)');
   const titleY=14;txt(T('info.title'),SW/2,titleY+10,C.text,'bold 16px sans-serif');
   fillRR(10,titleY,34,34,8,C.surface2);txt('✕',27,titleY+17,C.muted,'14px sans-serif');addHit(10,titleY,34,34,'CLOSE_INFO',{});
   const tabs=[{key:'talent',label:T('info.tabs.talent')},{key:'item',label:T('info.tabs.item')},{key:'env',label:T('info.tabs.env')}];
@@ -261,16 +278,19 @@ function updateControlsVisibility(){
   const show=(G.phase==='HOME'&&!G.infoOpen)||G.phase==='PLAYING';
   bar.style.display=show?'flex':'none';
 }
-function renderAll(){
-  if(!ctx)return;ItemArt.load();TalentArt.load();EnvArt.load();SceneArt.load();hitAreas=[];const L=layout();const SW=GameGlobal.SW,SH=GameGlobal.SH;
-  updateControlsVisibility();
-  if(C.bg2){const g=ctx.createLinearGradient(0,0,0,SH);g.addColorStop(0,C.bg2);g.addColorStop(1,C.bg);ctx.fillStyle=g;}else{ctx.fillStyle=C.bg;}
-  ctx.fillRect(0,0,SW,SH);
+// Full-screen backdrop, drawn in screen space — it fills the margins beside the content column.
+function drawBackdrop(){
+  const FW=GameGlobal.screenW,FH=GameGlobal.screenH;
+  if(C.bg2){const g=ctx.createLinearGradient(0,0,0,FH);g.addColorStop(0,C.bg2);g.addColorStop(1,C.bg);ctx.fillStyle=g;}else{ctx.fillStyle=C.bg;}
+  ctx.fillRect(0,0,FW,FH);
   // scene background per skin (cover-fit); solid gradient above is the fallback until it loads
   const _sk=(typeof activeSkinId!=='undefined')?activeSkinId:'deep';const _scn=SceneArt.get(_sk);
-  if(_scn){const sc=Math.max(SW/_scn.width,SH/_scn.height),dw=_scn.width*sc,dh=_scn.height*sc;ctx.drawImage(_scn,(SW-dw)/2,(SH-dh)/2,dw,dh);
+  if(_scn){const sc=Math.max(FW/_scn.width,FH/_scn.height),dw=_scn.width*sc,dh=_scn.height*sc;ctx.drawImage(_scn,(FW-dw)/2,(FH-dh)/2,dw,dh);
     // subtle scrim so UI text keeps contrast (light skins→white veil, dark→black veil)
-    ctx.fillStyle=C.bg2?'rgba(230,244,255,0.28)':'rgba(0,10,20,0.32)';ctx.fillRect(0,0,SW,SH);}
+    ctx.fillStyle=C.bg2?'rgba(230,244,255,0.28)':'rgba(0,10,20,0.32)';ctx.fillRect(0,0,FW,FH);}
+}
+// Drawn in column space (x from 0 to SW); renderAll translates this by OX.
+function drawPhase(L){
   if(G.phase==='HOME'){drawHome();if(G.infoOpen)drawInfoOverlay();drawFloat();return;}
   if(G.phase==='TALENT_SELECT'){drawTalentOverlay(L);drawFloat();return;}
   if(G.phase==='LEVEL_INTRO'){drawLevelIntro();drawFloat();return;}
@@ -278,4 +298,11 @@ function renderAll(){
   drawHeader(L);drawEnergyRow(L);drawEnvBar(L);drawTalentBar(L);drawItemBar(L);(G.anim?drawBoardAnim(L,G.anim.t):drawBoard(L));drawTaunt(L);drawButtons(L);
   if(G.phase==='WIN')drawWinOverlay();if(G.phase==='LOSE')drawLoseOverlay();
   drawAchievement();drawFloat();
+}
+function renderAll(){
+  if(!ctx)return;ItemArt.load();TalentArt.load();EnvArt.load();SceneArt.load();hitAreas=[];const L=layout();
+  updateControlsVisibility();
+  drawBackdrop();
+  ctx.save();ctx.translate(GameGlobal.OX||0,0);
+  try{drawPhase(L);}finally{ctx.restore();}   // drawPhase returns early per phase — restore must still run
 }

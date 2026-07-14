@@ -33,6 +33,11 @@ function tileStyle(v) {
     if (v >= TILE_KEYS[i]) return TILE_MAP[TILE_KEYS[i]];
   return TILE_MAP[2];
 }
+// Board values stay powers of two internally, but the player only ever sees an evolution
+// tier: 2 → Lv.1, 4 → Lv.2, 8 → Lv.3 … (1 = Lv.0, the debris tile storms spawn).
+// Every user-facing number must go through tierDisp — never print a raw board value.
+const tierOf = v => Math.round(Math.log2(v));
+const tierDisp = v => `Lv.${tierOf(v)}`;
 // LABELS is filled from the active skin's localized labels in applyLocale/applySkin.
 let LABELS = {};
 let activeSkinId = 'deep';

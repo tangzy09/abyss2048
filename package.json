@@ -2,7 +2,7 @@
   "name": "deep-merge",
   "version": "1.0.0",
   "private": true,
-  "description": "Deep Merge — an ocean-themed 2048-style merge puzzle game (Android / iOS, Capacitor).",
+  "description": "Abyss Merge — an ocean creature-evolution roguelite (Android / iOS, Capacitor).",
   "scripts": {
     "serve": "npx --yes http-server www -p 5173 -c-1 -o",
     "sync": "cap sync",

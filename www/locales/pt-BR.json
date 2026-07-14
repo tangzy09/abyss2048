@@ -1,27 +1,436 @@
 {
-  "lang": { "name": "Português", "toggle": "Idioma" },
-  "home": { "title": "2048 Abyss", "subtitle": "A Jornada de um Mergulhador", "bestRecord": "Melhor profundidade  {best}", "dive": "Mergulhar!", "guide": "Guia", "tip": "Primeira regra do mar: ache um peixe maior", "keyHint": "← Setas / WASD para mover" },
-  "ui": { "score": "Profundidade", "steps": "Passos", "best": "Recorde", "energy": "⚡ Energia", "equip": "Equipamento", "newGame": "🔄 Mergulhar de Novo", "adGear": "📺 Equip. por Anúncio", "empty": "—", "stepsLeft": "{n} restantes", "ghost": "?" },
-  "talentSelect": { "title": "🐚 Escolha um talento", "level": "Nível: {name}", "skip": "🎲 Mergulhar sem nada" },
-  "levelIntro": { "tutorialTitle": "Guia de Mergulho Iniciante", "tutorialStart": "Entendi, mergulhar!", "start": "Começar o mergulho!", "levelN": "Nível {n}", "targetLabel": "Objetivo", "targetVal": "Combine até {val} ({name})", "targetEndless": "Abismo infinito — vá o mais fundo que puder", "sizeLabel": "Tamanho do tabuleiro", "initLabel": "Criatura inicial", "initVal": "O tabuleiro começa com {val} ({name})", "diffLabel": "Dificuldade", "diffHard": "Difícil — eventos do mar mais frequentes", "tutorial": [ "👆 Deslize, ou use as setas / WASD, para empurrar todas as criaturas", "🐟 Criaturas iguais se combinam e evoluem ao se tocarem", "🎯 Objetivo: combine até o Polvo (32) para passar!", "⚠️ Se o mar encher, o oxigênio acaba — fim de jogo", "🎒 Use talentos e equipamentos para mergulhar mais fundo" ] },
-  "win": { "next": "Próximo →", "continue": "Continuar mergulhando →", "restart": "Reiniciar", "title": "Passou!" },
-  "lose": { "clear": "📺 Assista a um anúncio para limpar ≤4 criaturas ({n})", "noClear": "Nenhuma criatura ≤4 para limpar", "retry": "Tentar de novo", "restart": "Reiniciar", "title": "Sem oxigênio!" },
-  "reward": { "titleEnergy": "⚡ Energia cheia!", "titleHoarder": "🎒 Mochileiro das Profundezas!", "titleShare": "Recompensa do fundo do mar!", "titleWin": "🎁 Recompensa de fase!", "subEnergy": "Pontuação chegou a 1000 — escolha um equipamento", "subHoarder": "Escolha de equipamento a cada 100 passos", "subShare": "Escolha um equipamento ({n} restantes)", "subWin": "Escolha um equipamento para levar à próxima fase", "skip": "Pular, sem equipamento" },
-  "info": { "title": "Como jogar", "tabs": { "talent": "Talentos", "item": "Equipamentos", "env": "Mar" }, "privacy": "🛡 Opções de privacidade", "privacyNative": "Disponível apenas no app instalado" },
-  "frag": { "common": "🪨 Fragmento Comum", "rare": "💎 Fragmento Raro", "epic": "🔮 Fragmento Épico", "claimed": "✅ Fragmento de hoje resgatado", "available": "{label} ×1  — passe de fase para ganhar!" },
-  "ads": { "simWatch": "(Anúncio simulado) Assistir a um vídeo com recompensa para receber o prêmio?", "simInterstitial": "(Anúncio intersticial simulado) Toque em OK para fechar" },
-  "float": { "crit": "⚡ Crítico de pressão! → {val}", "doubleItem": "⚡ Equipamento em dobro! → {val}", "golden": "✨ Bênção do Deus do Mar! → {val}", "freezeEnd": "⏸️ Congelamento Profundo terminou", "envStart": "{icon} {name}!", "envEnd": "{icon} {name} terminou", "haveItem": "{icon} Você já tem {name}, descartado", "bagFull": "🎒 Equipamentos cheios, descartado", "bombArm": "💣 Toque em qualquer célula para detonar!", "bombCancel": "Bomba cancelada", "cancel": "Cancelado", "tipAmplify": "🔆 Toque numa criatura ≤256 para evoluir", "tipGamble": "🎲 Toque numa criatura ≤1024 (50% evolui / 50% some)", "tipYolo": "🎰 Toque em qualquer criatura (25% dobra / 75% some)", "tipHalve": "✂️ Toque numa criatura ≥4 para dividir pela metade", "tipSwap": "🔁 Toque na primeira criatura", "shuffle": "🔀 Correnteza embaralhou!", "noUndo": "Nenhum movimento para desfazer", "undo": "⏪ Desfez um passo", "double": "⚡ Próxima combinação em dobro!", "freeze": "⏸️ Nenhuma criatura nova nos próximos 5 deslizes!", "noJokerSpace": "Nenhuma célula vazia para o fantasma", "joker": "🃏 O Fantasma das Profundezas está à espreita!", "fogNoBomb": "Encoberto por tinta — não dá para bombardear!", "bombHit": "💥 Afundou!", "amplifyDone": "🔆 {from}→{to}!", "gambleWin": "🎲 Ganhou a aposta! {from}→{to}", "gambleLose": "🎲 Perdeu a aposta! {val} sumiu", "yoloWin": "🎰 Grande prêmio! {from}→{to}", "yoloLose": "🎰 Foi-se! {val} sumiu", "halveDone": "✂️ {from}→{to}", "swapSecond": "🔁 Toque na segunda criatura", "swapCancel": "🔁 Cancelado, toque na primeira de novo", "swapDone": "🔁 Trocado!", "rewardGot": "{icon} Ganhou equipamento {rarity}: {name}", "rewardBagFull": "🎒 Equipamentos cheios, {name} descartado", "clearSmall": "Limpou todas as criaturas ≤4!", "adNoReward": "Anúncio não concluído — sem recompensa" },
-  "rarity": { "common": "Comum", "rare": "Raro", "epic": "Abissal" },
-  "talents": { "double": { "name": "Crítico de Pressão", "desc": "A cada 5 combinações, o valor da peça dobra (128+128=512)", "badge": "Crítico" }, "golden": { "name": "Toque do Deus do Mar", "desc": "Cada combinação tem 20% de chance de dobrar o valor", "badge": "Sortudo" }, "hoarder": { "name": "Mochileiro das Profundezas", "desc": "Expande os equipamentos para 7 espaços; uma escolha de equipamento a cada 100 passos", "badge": "Acúmulo" } },
-  "items": { "bomb": { "name": "Bomba de Profundidade", "desc": "Detona a criatura numa célula escolhida" }, "shuffle": { "name": "Correnteza Embaralhadora", "desc": "Reorganiza todas as células aleatoriamente" }, "undo": { "name": "Refluxo", "desc": "Desfaz seu último movimento" }, "double": { "name": "Impulso de Pressão", "desc": "Próximo valor de combinação ×2" }, "amplify": { "name": "Hormônio de Crescimento", "desc": "Dobra uma criatura ≤256" }, "gamble": { "name": "Aposta das Profundezas", "desc": "50% evolui / 50% some (≤1024)" }, "joker": { "name": "Fantasma das Profundezas", "desc": "Coloca uma peça fantasma; combina com ≤2048" }, "yolo": { "name": "Aposta do Abismo", "desc": "25% evolui, 75% some (qualquer criatura)" }, "swap": { "name": "Troca de Correnteza", "desc": "Troca a posição de duas criaturas" }, "halve": { "name": "Corte de Pressão", "desc": "Divide pela metade uma criatura ≥4" }, "freeze": { "name": "Congelamento Profundo", "desc": "Nenhuma criatura nova nos próximos 5 deslizes" } },
-  "envs": { "normal": { "name": "Mar Calmo", "desc": "Mergulho normal, correntes estáveis" }, "storm": { "name": "Vórtice do Fundo do Mar", "desc": "20 passos; um camarão invade a cada 5 passos" }, "fog": { "name": "Patrulha das Lulas", "desc": "20 passos; 3 células aleatórias encobertas por tinta" }, "overtime": { "name": "Trava de Rede", "desc": "15 passos; trava 1 célula por 3 passos a cada passo" }, "bonus": { "name": "Onda de Tesouro", "desc": "10 passos; pontuação ×1,5" }, "gravity": { "name": "Maré Invertida", "desc": "15 passos; cima/baixo invertidos" }, "fogenv": { "name": "Névoa Profunda", "desc": "15 passos; 4 células aleatórias escurecem" }, "valx2": { "name": "Frenesi de Evolução", "desc": "10 passos; valor de combinação dobrado" }, "scorex2": { "name": "Bolhas em Dobro", "desc": "10 passos; pontuação de combinação ×2" } },
-  "achievements": { "32": { "title": "Mergulhador Certificado", "desc": "Finalmente vestiu a roupa de mergulho!" }, "128": { "title": "Encontrou uma Baleia-Azul", "desc": "Ela olhou para você e foi embora" }, "256": { "title": "Fuga do Tubarão", "desc": "O Grande Tubarão-Branco diz que você não está gordo o bastante" }, "1024": { "title": "Explorador das Profundezas", "desc": "Só o som do oxigênio na escuridão" }, "2048": { "title": "Conquistador do Abismo", "desc": "A conquista suprema das profundezas!" } },
-  "taunts": [ "Mais um belo dia para afundar nas profundezas", "Combinar até 2048? Tão difícil quanto voltar à superfície", "Quase lá! Toda santa vez", "Um peixe olhou para você; você finge que está nadando", "Primeira regra do mar: ache um peixe maior", "Pouco oxigênio, mas suas combinações estão nas alturas", "Não é afundar, é uma descida estratégica", "Uma combinação falha tudo bem — o oxigênio está acabando mesmo", "A vida é como as profundezas: quanto mais você combina, mais fundo vai", "O fracasso é a mãe do sucesso; embaralhar é o pai de voltar à tona", "O destino te deu peixes pequenos — mas você pode combinar", "Respire fundo… espera, tem oxigênio suficiente?", "Vai, mergulhador, ache um peixe maior hoje também", "A baleia diz para ir a 2000m; eu digo para combinar até 2048", "A pressão subiu de novo — combine uma rodada para relaxar", "O fim do universo é o fundo do mar", "Tática do canto: empurre o peixe grande para o canto", "Devagar tudo bem; o tabuleiro cheio é o inimigo", "Agora mesmo, você está fazendo um milagre das profundezas", "O tabuleiro pode encher, o oxigênio não pode esvaziar" ],
-  "levels": [ { "name": "Primeiro Snorkel", "winTitle": "Voltou à superfície em segurança!", "winSub": "Encontrou o polvo — sua jornada de mergulho começa!", "loseTitle": "Quase se afogou!", "loseSub": "Tente de novo — desta vez você volta nadando à praia!" }, { "name": "Recife de Coral", "winTitle": "Atravessou o recife!", "winSub": "Combinou uma Lula Gigante — agora é mergulhador profissional!", "loseTitle": "Mais forte a cada vez!", "loseSub": "Tabuleiro cheio tudo bem — é assim que os profissionais treinam!" }, { "name": "Rumo ao Abismo", "winTitle": "Abismo conquistado!", "winSub": "Mergulhador lendário — taxa de conclusão <0,1%!", "loseTitle": "Você já é incrível!", "loseSub": "Qualquer um que chega tão fundo é um herói — tente mais uma vez!" }, { "name": "Abismo Infinito", "winTitle": null, "winSub": null, "loseTitle": "Mergulhador lendário!", "loseSub": "Chegar tão longe faz de você um mestre das profundezas!" } ],
+  "lang": {
+    "name": "Português",
+    "toggle": "Idioma"
+  },
+  "home": {
+    "title": "Abyss Merge",
+    "subtitle": "A Jornada de um Mergulhador",
+    "bestRecord": "Melhor profundidade  {best}",
+    "dive": "Mergulhar!",
+    "guide": "Guia",
+    "tip": "Primeira regra do mar: ache um peixe maior",
+    "keyHint": "← Setas / WASD para mover"
+  },
+  "ui": {
+    "score": "Profundidade",
+    "steps": "Passos",
+    "best": "Recorde",
+    "energy": "⚡ Energia",
+    "equip": "Equipamento",
+    "newGame": "🔄 Mergulhar de Novo",
+    "adGear": "📺 Equip. por Anúncio",
+    "empty": "—",
+    "stepsLeft": "{n} restantes",
+    "ghost": "?"
+  },
+  "talentSelect": {
+    "title": "🐚 Escolha um talento",
+    "level": "Nível: {name}",
+    "skip": "🎲 Mergulhar sem nada"
+  },
+  "levelIntro": {
+    "tutorialTitle": "Guia de Mergulho Iniciante",
+    "tutorialStart": "Entendi, mergulhar!",
+    "start": "Começar o mergulho!",
+    "levelN": "Nível {n}",
+    "targetLabel": "Objetivo",
+    "targetVal": "Combine até {name} ({val})",
+    "targetEndless": "Abismo infinito — vá o mais fundo que puder",
+    "sizeLabel": "Tamanho do tabuleiro",
+    "initLabel": "Criatura inicial",
+    "initVal": "O tabuleiro começa com {name} ({val})",
+    "diffLabel": "Dificuldade",
+    "diffHard": "Difícil — eventos do mar mais frequentes",
+    "tutorial": [
+      "👆 Deslize, ou use as setas / WASD, para empurrar todas as criaturas",
+      "🐟 Criaturas iguais se combinam e evoluem ao se tocarem",
+      "🎯 Objetivo: combine até o Polvo (Lv.5) para passar!",
+      "⚠️ Se o mar encher, o oxigênio acaba — fim de jogo",
+      "🎒 Use talentos e equipamentos para mergulhar mais fundo"
+    ]
+  },
+  "win": {
+    "next": "Próximo →",
+    "continue": "Continuar mergulhando →",
+    "restart": "Reiniciar",
+    "title": "Passou!"
+  },
+  "lose": {
+    "clear": "📺 Assista a um anúncio para limpar ≤Lv.2 criaturas ({n})",
+    "noClear": "Nenhuma criatura ≤Lv.2 para limpar",
+    "retry": "Tentar de novo",
+    "restart": "Reiniciar",
+    "title": "Sem oxigênio!"
+  },
+  "reward": {
+    "titleEnergy": "⚡ Energia cheia!",
+    "titleHoarder": "🎒 Mochileiro das Profundezas!",
+    "titleShare": "Recompensa do fundo do mar!",
+    "titleWin": "🎁 Recompensa de fase!",
+    "subEnergy": "Pontuação chegou a 1000 — escolha um equipamento",
+    "subHoarder": "Escolha de equipamento a cada 100 passos",
+    "subShare": "Escolha um equipamento ({n} restantes)",
+    "subWin": "Escolha um equipamento para levar à próxima fase",
+    "skip": "Pular, sem equipamento"
+  },
+  "info": {
+    "title": "Como jogar",
+    "tabs": {
+      "talent": "Talentos",
+      "item": "Equipamentos",
+      "env": "Mar"
+    },
+    "privacy": "🛡 Opções de privacidade",
+    "privacyNative": "Disponível apenas no app instalado"
+  },
+  "frag": {
+    "common": "🪨 Fragmento Comum",
+    "rare": "💎 Fragmento Raro",
+    "epic": "🔮 Fragmento Épico",
+    "claimed": "✅ Fragmento de hoje resgatado",
+    "available": "{label} ×1  — passe de fase para ganhar!"
+  },
+  "ads": {
+    "simWatch": "(Anúncio simulado) Assistir a um vídeo com recompensa para receber o prêmio?",
+    "simInterstitial": "(Anúncio intersticial simulado) Toque em OK para fechar"
+  },
+  "float": {
+    "crit": "⚡ Crítico de pressão! → {val}",
+    "doubleItem": "⚡ Equipamento em dobro! → {val}",
+    "golden": "✨ Bênção do Deus do Mar! → {val}",
+    "freezeEnd": "⏸️ Congelamento Profundo terminou",
+    "envStart": "{icon} {name}!",
+    "envEnd": "{icon} {name} terminou",
+    "haveItem": "{icon} Você já tem {name}, descartado",
+    "bagFull": "🎒 Equipamentos cheios, descartado",
+    "bombArm": "💣 Toque em qualquer célula para detonar!",
+    "bombCancel": "Bomba cancelada",
+    "cancel": "Cancelado",
+    "tipAmplify": "🔆 Toque numa criatura ≤Lv.8 para evoluir",
+    "tipGamble": "🎲 Toque numa criatura ≤Lv.10 (50% evolui / 50% some)",
+    "tipYolo": "🎰 Toque em qualquer criatura (25% dobra / 75% some)",
+    "tipHalve": "✂️ Toque numa criatura ≥Lv.2 para dividir pela metade",
+    "tipSwap": "🔁 Toque na primeira criatura",
+    "shuffle": "🔀 Correnteza embaralhou!",
+    "noUndo": "Nenhum movimento para desfazer",
+    "undo": "⏪ Desfez um passo",
+    "double": "⚡ Próxima combinação em dobro!",
+    "freeze": "⏸️ Nenhuma criatura nova nos próximos 5 deslizes!",
+    "noJokerSpace": "Nenhuma célula vazia para o fantasma",
+    "joker": "🃏 O Fantasma das Profundezas está à espreita!",
+    "fogNoBomb": "Encoberto por tinta — não dá para bombardear!",
+    "bombHit": "💥 Afundou!",
+    "amplifyDone": "🔆 {from}→{to}!",
+    "gambleWin": "🎲 Ganhou a aposta! {from}→{to}",
+    "gambleLose": "🎲 Perdeu a aposta! {val} sumiu",
+    "yoloWin": "🎰 Grande prêmio! {from}→{to}",
+    "yoloLose": "🎰 Foi-se! {val} sumiu",
+    "halveDone": "✂️ {from}→{to}",
+    "swapSecond": "🔁 Toque na segunda criatura",
+    "swapCancel": "🔁 Cancelado, toque na primeira de novo",
+    "swapDone": "🔁 Trocado!",
+    "rewardGot": "{icon} Ganhou equipamento {rarity}: {name}",
+    "rewardBagFull": "🎒 Equipamentos cheios, {name} descartado",
+    "clearSmall": "Limpou todas as criaturas ≤Lv.2!",
+    "adNoReward": "Anúncio não concluído — sem recompensa"
+  },
+  "rarity": {
+    "common": "Comum",
+    "rare": "Raro",
+    "epic": "Abissal"
+  },
+  "talents": {
+    "double": {
+      "name": "Crítico de Pressão",
+      "desc": "A cada 5 combinações, o valor da peça dobra (Lv.7+Lv.7=Lv.9)",
+      "badge": "Crítico"
+    },
+    "golden": {
+      "name": "Toque do Deus do Mar",
+      "desc": "Cada combinação tem 20% de chance de dobrar o valor",
+      "badge": "Sortudo"
+    },
+    "hoarder": {
+      "name": "Mochileiro das Profundezas",
+      "desc": "Expande os equipamentos para 7 espaços; uma escolha de equipamento a cada 100 passos",
+      "badge": "Acúmulo"
+    }
+  },
+  "items": {
+    "bomb": {
+      "name": "Bomba de Profundidade",
+      "desc": "Detona a criatura numa célula escolhida"
+    },
+    "shuffle": {
+      "name": "Correnteza Embaralhadora",
+      "desc": "Reorganiza todas as células aleatoriamente"
+    },
+    "undo": {
+      "name": "Refluxo",
+      "desc": "Desfaz seu último movimento"
+    },
+    "double": {
+      "name": "Impulso de Pressão",
+      "desc": "Próximo valor de combinação ×2"
+    },
+    "amplify": {
+      "name": "Hormônio de Crescimento",
+      "desc": "Dobra uma criatura ≤Lv.8"
+    },
+    "gamble": {
+      "name": "Aposta das Profundezas",
+      "desc": "50% evolui / 50% some (≤Lv.10)"
+    },
+    "joker": {
+      "name": "Fantasma das Profundezas",
+      "desc": "Coloca uma peça fantasma; combina com ≤Lv.11"
+    },
+    "yolo": {
+      "name": "Aposta do Abismo",
+      "desc": "25% evolui, 75% some (qualquer criatura)"
+    },
+    "swap": {
+      "name": "Troca de Correnteza",
+      "desc": "Troca a posição de duas criaturas"
+    },
+    "halve": {
+      "name": "Corte de Pressão",
+      "desc": "Divide pela metade uma criatura ≥Lv.2"
+    },
+    "freeze": {
+      "name": "Congelamento Profundo",
+      "desc": "Nenhuma criatura nova nos próximos 5 deslizes"
+    }
+  },
+  "envs": {
+    "normal": {
+      "name": "Mar Calmo",
+      "desc": "Mergulho normal, correntes estáveis"
+    },
+    "storm": {
+      "name": "Vórtice do Fundo do Mar",
+      "desc": "20 passos; um camarão invade a cada 5 passos"
+    },
+    "fog": {
+      "name": "Patrulha das Lulas",
+      "desc": "20 passos; 3 células aleatórias encobertas por tinta"
+    },
+    "overtime": {
+      "name": "Trava de Rede",
+      "desc": "15 passos; trava 1 célula por 3 passos a cada passo"
+    },
+    "bonus": {
+      "name": "Onda de Tesouro",
+      "desc": "10 passos; pontuação ×1,5"
+    },
+    "gravity": {
+      "name": "Maré Invertida",
+      "desc": "15 passos; cima/baixo invertidos"
+    },
+    "fogenv": {
+      "name": "Névoa Profunda",
+      "desc": "15 passos; 4 células aleatórias escurecem"
+    },
+    "valx2": {
+      "name": "Frenesi de Evolução",
+      "desc": "10 passos; valor de combinação dobrado"
+    },
+    "scorex2": {
+      "name": "Bolhas em Dobro",
+      "desc": "10 passos; pontuação de combinação ×2"
+    }
+  },
+  "achievements": {
+    "32": {
+      "title": "Mergulhador Certificado",
+      "desc": "Finalmente vestiu a roupa de mergulho!"
+    },
+    "128": {
+      "title": "Encontrou uma Baleia-Azul",
+      "desc": "Ela olhou para você e foi embora"
+    },
+    "256": {
+      "title": "Fuga do Tubarão",
+      "desc": "O Grande Tubarão-Branco diz que você não está gordo o bastante"
+    },
+    "1024": {
+      "title": "Explorador das Profundezas",
+      "desc": "Só o som do oxigênio na escuridão"
+    },
+    "2048": {
+      "title": "Conquistador do Abismo",
+      "desc": "A conquista suprema das profundezas!"
+    }
+  },
+  "taunts": [
+    "Mais um belo dia para afundar nas profundezas",
+    "Evoluir até Lv.11? Tão difícil quanto voltar à superfície",
+    "Quase lá! Toda santa vez",
+    "Um peixe olhou para você; você finge que está nadando",
+    "Primeira regra do mar: ache um peixe maior",
+    "Pouco oxigênio, mas suas combinações estão nas alturas",
+    "Não é afundar, é uma descida estratégica",
+    "Uma combinação falha tudo bem — o oxigênio está acabando mesmo",
+    "A vida é como as profundezas: quanto mais você combina, mais fundo vai",
+    "O fracasso é a mãe do sucesso; embaralhar é o pai de voltar à tona",
+    "O destino te deu peixes pequenos — mas você pode combinar",
+    "Respire fundo… espera, tem oxigênio suficiente?",
+    "Vai, mergulhador, ache um peixe maior hoje também",
+    "A baleia diz para ir a 2000m; eu digo para evoluir até Lv.11",
+    "A pressão subiu de novo — combine uma rodada para relaxar",
+    "O fim do universo é o fundo do mar",
+    "Tática do canto: empurre o peixe grande para o canto",
+    "Devagar tudo bem; o tabuleiro cheio é o inimigo",
+    "Agora mesmo, você está fazendo um milagre das profundezas",
+    "O tabuleiro pode encher, o oxigênio não pode esvaziar"
+  ],
+  "levels": [
+    {
+      "name": "Primeiro Snorkel",
+      "winTitle": "Voltou à superfície em segurança!",
+      "winSub": "Encontrou o polvo — sua jornada de mergulho começa!",
+      "loseTitle": "Quase se afogou!",
+      "loseSub": "Tente de novo — desta vez você volta nadando à praia!"
+    },
+    {
+      "name": "Recife de Coral",
+      "winTitle": "Atravessou o recife!",
+      "winSub": "Combinou uma Lula Gigante — agora é mergulhador profissional!",
+      "loseTitle": "Mais forte a cada vez!",
+      "loseSub": "Tabuleiro cheio tudo bem — é assim que os profissionais treinam!"
+    },
+    {
+      "name": "Rumo ao Abismo",
+      "winTitle": "Abismo conquistado!",
+      "winSub": "Mergulhador lendário — taxa de conclusão <0,1%!",
+      "loseTitle": "Você já é incrível!",
+      "loseSub": "Qualquer um que chega tão fundo é um herói — tente mais uma vez!"
+    },
+    {
+      "name": "Abismo Infinito",
+      "winTitle": null,
+      "winSub": null,
+      "loseTitle": "Mergulhador lendário!",
+      "loseSub": "Chegar tão longe faz de você um mestre das profundezas!"
+    }
+  ],
   "skins": {
-    "deep": { "name": "Profundeza da Meia-Noite", "labels": { "2": "Krill", "4": "Água-viva", "8": "Peixe-palhaço", "16": "Baiacu", "32": "Polvo", "64": "Leão-marinho", "128": "Beluga", "256": "Tubarão-branco", "512": "Lula Gigante", "1024": "Peixe-diabo", "2048": "Demônio do Abismo", "4096": "Baleia Lendária", "8192": "Deus das Profundezas", "16384": "Mito do Mar", "32768": "Mestre do Mergulho", "65536": "O Deus do Mar Chora", "131072": "O Oceano se Esvai", "262144": "Descansando no Fundo do Mar", "524288": "Abismo Cósmico", "1048576": "Fundo do Tempo", "2097152": "Além das Profundezas", "4194304": "Indescritível", "8388608": "Você Venceu, Peixe", "16777216": "Um com o Mar" } },
-    "coral": { "name": "Luz do Sol no Coral", "labels": { "2": "Cavalo-marinho pigmeu", "4": "Anêmona", "8": "Peixe-palhaço", "16": "Peixe-borboleta", "32": "Peixe-anjo", "64": "Tartaruga-marinha", "128": "Golfinho", "256": "Tubarão-baleia", "512": "Atum-azul", "1024": "Peixe-vela", "2048": "Rainha do Coral", "4096": "Guardiã do Oceano", "8192": "Lenda do Coral", "16384": "Deusa da Corrente Quente", "32768": "Mestre do Coral", "65536": "Deus do Mar Tropical", "131072": "Lar do Oceano", "262144": "Coral Eterno", "524288": "Cosmos Raso", "1048576": "Recife do Tempo", "2097152": "Além das Correntes", "4194304": "Coral Sem Fim", "8388608": "Você Venceu, Recife", "16777216": "Luz ao Mar" } },
-    "polar": { "name": "Aurora Polar", "labels": { "2": "Krill", "4": "Peixe-de-gelo", "8": "Foca", "16": "Dugongo", "32": "Narval", "64": "Beluga", "128": "Baleia minke", "256": "Orca", "512": "Baleia-da-groenlândia", "1024": "Tubarão-da-groenlândia", "2048": "Fera da Aurora", "4096": "Deus do Gelo", "8192": "Deus Polar", "16384": "Lenda da Aurora", "32768": "Mestre do Mar Gelado", "65536": "Deus do Mar Ártico", "131072": "Geleira Desaparecida", "262144": "Polar Eterno", "524288": "Cosmos da Noite Polar", "1048576": "Tempo Congelado", "2097152": "Além do Polo", "4194304": "Não Pode Congelar", "8388608": "Você Venceu, Gelo", "16777216": "Luz ao Polo" } },
-    "abyss": { "name": "Brilho do Abismo", "labels": { "2": "Krill Luminoso", "4": "Peixe-lanterna", "8": "Água-viva Luminosa", "16": "Robalo das Profundezas", "32": "Enguia-elétrica", "64": "Peixe-diabo", "128": "Lula Gigante", "256": "Caranguejo das Profundezas", "512": "Tubarão-fantasma", "1024": "Peixe-dragão", "2048": "Senhor do Abismo", "4096": "Deus das Trevas", "8192": "Lenda Luminosa", "16384": "Mestre do Abismo", "32768": "Deus Luminoso", "65536": "Deus do Mar Abissal", "131072": "Oceano das Trevas", "262144": "Brilho Eterno", "524288": "Cosmos do Abismo", "1048576": "Tempo Profundo", "2097152": "Além das Trevas", "4194304": "Indescritível", "8388608": "Você Venceu, Abismo", "16777216": "Luz ao Abismo" } }
+    "deep": {
+      "name": "Profundeza da Meia-Noite",
+      "labels": {
+        "2": "Krill",
+        "4": "Água-viva",
+        "8": "Peixe-palhaço",
+        "16": "Baiacu",
+        "32": "Polvo",
+        "64": "Leão-marinho",
+        "128": "Beluga",
+        "256": "Tubarão-branco",
+        "512": "Lula Gigante",
+        "1024": "Peixe-diabo",
+        "2048": "Demônio do Abismo",
+        "4096": "Baleia Lendária",
+        "8192": "Deus das Profundezas",
+        "16384": "Mito do Mar",
+        "32768": "Mestre do Mergulho",
+        "65536": "O Deus do Mar Chora",
+        "131072": "O Oceano se Esvai",
+        "262144": "Descansando no Fundo do Mar",
+        "524288": "Abismo Cósmico",
+        "1048576": "Fundo do Tempo",
+        "2097152": "Além das Profundezas",
+        "4194304": "Indescritível",
+        "8388608": "Você Venceu, Peixe",
+        "16777216": "Um com o Mar"
+      }
+    },
+    "coral": {
+      "name": "Luz do Sol no Coral",
+      "labels": {
+        "2": "Cavalo-marinho pigmeu",
+        "4": "Anêmona",
+        "8": "Peixe-palhaço",
+        "16": "Peixe-borboleta",
+        "32": "Peixe-anjo",
+        "64": "Tartaruga-marinha",
+        "128": "Golfinho",
+        "256": "Tubarão-baleia",
+        "512": "Atum-azul",
+        "1024": "Peixe-vela",
+        "2048": "Rainha do Coral",
+        "4096": "Guardiã do Oceano",
+        "8192": "Lenda do Coral",
+        "16384": "Deusa da Corrente Quente",
+        "32768": "Mestre do Coral",
+        "65536": "Deus do Mar Tropical",
+        "131072": "Lar do Oceano",
+        "262144": "Coral Eterno",
+        "524288": "Cosmos Raso",
+        "1048576": "Recife do Tempo",
+        "2097152": "Além das Correntes",
+        "4194304": "Coral Sem Fim",
+        "8388608": "Você Venceu, Recife",
+        "16777216": "Luz ao Mar"
+      }
+    },
+    "polar": {
+      "name": "Aurora Polar",
+      "labels": {
+        "2": "Krill",
+        "4": "Peixe-de-gelo",
+        "8": "Foca",
+        "16": "Dugongo",
+        "32": "Narval",
+        "64": "Beluga",
+        "128": "Baleia minke",
+        "256": "Orca",
+        "512": "Baleia-da-groenlândia",
+        "1024": "Tubarão-da-groenlândia",
+        "2048": "Fera da Aurora",
+        "4096": "Deus do Gelo",
+        "8192": "Deus Polar",
+        "16384": "Lenda da Aurora",
+        "32768": "Mestre do Mar Gelado",
+        "65536": "Deus do Mar Ártico",
+        "131072": "Geleira Desaparecida",
+        "262144": "Polar Eterno",
+        "524288": "Cosmos da Noite Polar",
+        "1048576": "Tempo Congelado",
+        "2097152": "Além do Polo",
+        "4194304": "Não Pode Congelar",
+        "8388608": "Você Venceu, Gelo",
+        "16777216": "Luz ao Polo"
+      }
+    },
+    "abyss": {
+      "name": "Brilho do Abismo",
+      "labels": {
+        "2": "Krill Luminoso",
+        "4": "Peixe-lanterna",
+        "8": "Água-viva Luminosa",
+        "16": "Robalo das Profundezas",
+        "32": "Enguia-elétrica",
+        "64": "Peixe-diabo",
+        "128": "Lula Gigante",
+        "256": "Caranguejo das Profundezas",
+        "512": "Tubarão-fantasma",
+        "1024": "Peixe-dragão",
+        "2048": "Senhor do Abismo",
+        "4096": "Deus das Trevas",
+        "8192": "Lenda Luminosa",
+        "16384": "Mestre do Abismo",
+        "32768": "Deus Luminoso",
+        "65536": "Deus do Mar Abissal",
+        "131072": "Oceano das Trevas",
+        "262144": "Brilho Eterno",
+        "524288": "Cosmos do Abismo",
+        "1048576": "Tempo Profundo",
+        "2097152": "Além das Trevas",
+        "4194304": "Indescritível",
+        "8388608": "Você Venceu, Abismo",
+        "16777216": "Luz ao Abismo"
+      }
+    }
   }
 }

@@ -112,10 +112,10 @@ function slideArr(arr){
       const base=v===-1?nv:(nv===-1?v:v);let val=base*2;
       G.mergeCount++;
       const dT=G.talents.find(t=>t.mergeBonus);
-      if(dT&&G.mergeCount%dT.mergeBonus.every===0){val*=dT.mergeBonus.multi;G.pendingFloat=tf('float.crit',{val});}
-      if(G.nextMergeDouble){val*=2;G.nextMergeDouble=false;G.pendingFloat=tf('float.doubleItem',{val});}
+      if(dT&&G.mergeCount%dT.mergeBonus.every===0){val*=dT.mergeBonus.multi;G.pendingFloat=tf('float.crit',{val:tierDisp(val)});}
+      if(G.nextMergeDouble){val*=2;G.nextMergeDouble=false;G.pendingFloat=tf('float.doubleItem',{val:tierDisp(val)});}
       const gT=G.talents.find(t=>t.goldenChance);
-      if(gT&&Math.random()<gT.goldenChance){val*=2;G.pendingFloat=tf('float.golden',{val});}
+      if(gT&&Math.random()<gT.goldenChance){val*=2;G.pendingFloat=tf('float.golden',{val:tierDisp(val)});}
       if(G.env?.valueMult)val*=G.env.valueMult;
       G.score+=Math.round(val*G.scoreMulti);checkAch(val);out.push(val);i=ni+1;
     }else{out.push(v);i++;}
@@ -221,10 +221,10 @@ function handleTileClick(r,c){
   if(G.bombMode){if(!v||v===0)return;if(G.specialTiles[r*G.size+c]?.type==='fog'){G.pendingFloat=tf('float.fogNoBomb');return;}G.board[r][c]=0;delete G.specialTiles[r*G.size+c];const slot=G.bombSlot;G.items[slot]=null;G.bombMode=false;G.pendingFloat=tf('float.bombHit');return;}
   if(!G.itemMode)return;
   const{type,slotIdx}=G.itemMode;
-  if(type==='amplify'){if(!v||v===-1||v<=0||v>256)return;G.board[r][c]=v*2;G.score+=v;checkAch(v*2);G.itemMode=null;consumeItem(slotIdx);G.pendingFloat=tf('float.amplifyDone',{from:v,to:v*2});}
-  else if(type==='gamble'){if(!v||v===-1||v<=0||v>1024)return;G.itemMode=null;if(Math.random()<0.5){G.board[r][c]=v*2;G.score+=v;checkAch(v*2);consumeItem(slotIdx);G.pendingFloat=tf('float.gambleWin',{from:v,to:v*2});}else{G.board[r][c]=0;consumeItem(slotIdx);G.pendingFloat=tf('float.gambleLose',{val:v});}}
-  else if(type==='yolo'){if(!v||v===0||v===-1)return;G.itemMode=null;if(Math.random()<0.25){G.board[r][c]=v*2;G.score+=v;checkAch(v*2);consumeItem(slotIdx);G.pendingFloat=tf('float.yoloWin',{from:v,to:v*2});}else{G.board[r][c]=0;consumeItem(slotIdx);G.pendingFloat=tf('float.yoloLose',{val:v});}}
-  else if(type==='halve'){if(!v||v===-1||v<4)return;const nv=Math.max(2,Math.floor(v/2));G.board[r][c]=nv;G.itemMode=null;consumeItem(slotIdx);G.pendingFloat=tf('float.halveDone',{from:v,to:nv});}
+  if(type==='amplify'){if(!v||v===-1||v<=0||v>256)return;G.board[r][c]=v*2;G.score+=v;checkAch(v*2);G.itemMode=null;consumeItem(slotIdx);G.pendingFloat=tf('float.amplifyDone',{from:tierDisp(v),to:tierDisp(v*2)});}
+  else if(type==='gamble'){if(!v||v===-1||v<=0||v>1024)return;G.itemMode=null;if(Math.random()<0.5){G.board[r][c]=v*2;G.score+=v;checkAch(v*2);consumeItem(slotIdx);G.pendingFloat=tf('float.gambleWin',{from:tierDisp(v),to:tierDisp(v*2)});}else{G.board[r][c]=0;consumeItem(slotIdx);G.pendingFloat=tf('float.gambleLose',{val:tierDisp(v)});}}
+  else if(type==='yolo'){if(!v||v===0||v===-1)return;G.itemMode=null;if(Math.random()<0.25){G.board[r][c]=v*2;G.score+=v;checkAch(v*2);consumeItem(slotIdx);G.pendingFloat=tf('float.yoloWin',{from:tierDisp(v),to:tierDisp(v*2)});}else{G.board[r][c]=0;consumeItem(slotIdx);G.pendingFloat=tf('float.yoloLose',{val:tierDisp(v)});}}
+  else if(type==='halve'){if(!v||v===-1||v<4)return;const nv=Math.max(2,Math.floor(v/2));G.board[r][c]=nv;G.itemMode=null;consumeItem(slotIdx);G.pendingFloat=tf('float.halveDone',{from:tierDisp(v),to:tierDisp(nv)});}
   else if(type==='swap'){if(!v||v===0)return;if(!G.swapState.first){G.swapState.first={r,c};G.pendingFloat=tf('float.swapSecond');}else{const{r:r1,c:c1}=G.swapState.first;if(r1===r&&c1===c){G.swapState.first=null;G.pendingFloat=tf('float.swapCancel');return;}const tmp=G.board[r1][c1];G.board[r1][c1]=G.board[r][c];G.board[r][c]=tmp;G.swapState=null;G.itemMode=null;consumeItem(slotIdx);G.pendingFloat=tf('float.swapDone');}}
   updateEnergy();if(checkWin())return;if(!canMove()){G.phase='LOSE';G.gameOver=true;try{Haptics.lose();}catch(e){}}
 }

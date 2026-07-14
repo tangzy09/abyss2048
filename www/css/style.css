@@ -11,7 +11,9 @@ canvas { display: block; touch-action: none; }
 #controls {
   position: fixed;
   top: calc(8px + env(safe-area-inset-top));
-  right: calc(8px + env(safe-area-inset-right));
+  /* hug the right edge of the 560px content column the canvas centres on (see initCanvas),
+     so this doesn't drift off to the screen corner on tablets */
+  right: calc(max(8px, (100vw - 560px) / 2 + 8px) + env(safe-area-inset-right));
   z-index: 20;
   display: flex; gap: 6px; align-items: center;
   padding: 5px 8px; border-radius: 18px;

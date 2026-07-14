@@ -1,7 +1,7 @@
 {
-  "name": "2048 Abyss: Skill Roguelite",
-  "short_name": "2048 Abyss",
-  "description": "Deep-sea roguelite 2048 merge puzzle with skills and talents. Merge glowing sea creatures and dive the abyss.",
+  "name": "Abyss Merge: Sea Roguelite",
+  "short_name": "Abyss Merge",
+  "description": "Deep-sea creature-evolution roguelite. Draft talents, collect gear, survive ocean hazards, and dive the abyss.",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
