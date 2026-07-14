@@ -95,7 +95,11 @@ const ACHS = [
 let TAUNTS = [''];
 
 const LEVELS = [
-  { id:1, size:3, target:32,   hard:false, initTile:null, envInterval:[30,20] },
+  // envScript: scripted hazards for the tutorial. Without it the first random env lands around
+  // step 30 — far past the point where a new player (or a reviewer) has stopped looking, so the
+  // whole shifting-ocean system reads as absent. Fire a friendly buff early, then a real hazard.
+  { id:1, size:3, target:32,   hard:false, initTile:null, envInterval:[30,20],
+    envScript:[{at:3,id:'valx2'},{at:14,id:'overtime'}] },
   { id:2, size:4, target:512,  hard:false, initTile:32,   envInterval:[25,15] },
   { id:3, size:4, target:2048, hard:true,  initTile:512,  envInterval:[15,10] },
   { id:4, size:5, target:null, hard:true,  initTile:2048, envInterval:[10,8], endless:true },

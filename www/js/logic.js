@@ -11,7 +11,7 @@ function initGame(levelIdx=0){
   Object.assign(G,{
     levelIdx,board:[],size:3,target:32,score:0,best,talents:[],
     items:Array(7).fill(null),itemSlots:4,carryItems:null,specialTiles:{},
-    env:ENVS[0],envStartStep:0,nextEnvStep:30,prevBoard:null,freezeGen:0,
+    env:ENVS[0],envStartStep:0,nextEnvStep:30,envScriptIdx:0,prevBoard:null,freezeGen:0,
     energyScore:0,_lastScore:0,swapState:null,stepCount:0,scoreMulti:1,
     nextMergeDouble:false,mergeCount:0,gameOver:false,unlocked:new Set(),
     startTime:Date.now(),bombMode:false,bombSlot:0,itemMode:null,
@@ -31,7 +31,7 @@ function saveGame(){
         talents:G.talents.map(t=>t.id), itemSlots:G.itemSlots,
         items:G.items.map(x=>x?x.id:null), specialTiles:G.specialTiles,
         energyScore:G.energyScore, mergeCount:G.mergeCount, unlocked:[...(G.unlocked||[])],
-        envId:G.env&&G.env.id, envStartStep:G.envStartStep, nextEnvStep:G.nextEnvStep,
+        envId:G.env&&G.env.id, envStartStep:G.envStartStep, nextEnvStep:G.nextEnvStep, envScriptIdx:G.envScriptIdx,
         scoreMulti:G.scoreMulti, freezeGen:G.freezeGen, nextMergeDouble:G.nextMergeDouble,
       };
       Platform.storage.set('dm_save', JSON.stringify(d));
@@ -56,6 +56,7 @@ function loadGame(){
     specialTiles:d.specialTiles||{},
     energyScore:d.energyScore||0, mergeCount:d.mergeCount||0, unlocked:new Set(d.unlocked||[]),
     env:ENVS.find(e=>e.id===d.envId)||ENVS[0], envStartStep:d.envStartStep||0, nextEnvStep:d.nextEnvStep||30,
+    envScriptIdx:d.envScriptIdx||0,
     scoreMulti:d.scoreMulti||1, freezeGen:d.freezeGen||0, nextMergeDouble:!!d.nextMergeDouble,
     _lastScore:d.score||0, phase:'PLAYING', gameOver:false, anim:null,
   });
@@ -78,7 +79,7 @@ function startLevel(){
   G.score=0;G.stepCount=0;G.gameOver=false;G.specialTiles={};G.scoreMulti=1;
   G.nextMergeDouble=false;G.mergeCount=0;G.bombMode=false;G.itemMode=null;
   G.swapState=null;G.prevBoard=null;G.energyScore=0;G._lastScore=0;G.freezeGen=0;G.startTime=Date.now();
-  G.env=ENVS[0];G.envStartStep=0;G.phase='PLAYING';G.shareRewarded=false;
+  G.env=ENVS[0];G.envStartStep=0;G.envScriptIdx=0;G.phase='PLAYING';G.shareRewarded=false;
   addTile();addTile();
   if(lv.initTile){const e=[];for(let r=0;r<lv.size;r++)for(let c=0;c<lv.size;c++)if(!G.board[r][c])e.push([r,c]);if(e.length){const[r,c]=e[Math.floor(Math.random()*e.length)];G.board[r][c]=lv.initTile;}}
   startEnvCycle();rotateTaunt();
@@ -160,9 +161,12 @@ function move(dir){
   const s=G.size;const prev=JSON.parse(JSON.stringify(G.board));
   const prevScore=G.score,prevMerge=G.mergeCount;const prevST=JSON.parse(JSON.stringify(G.specialTiles));
   const newBoard=Array.from({length:s},(_,r)=>Array.from({length:s},(_,c)=>G.board[r][c]));
-  const animSlides=[],mergedCells=new Set();
+  // "r,c" → the value of the tiles that merged there. Not the same as result/2: talents, the
+  // ×2 item and the Evolution Frenzy env can multiply the result, so the evolve animation has
+  // to be told which creature was actually on the board.
+  const animSlides=[],mergedCells=new Map();
   const applySlide=(getPos,setVal)=>{for(let i=0;i<s;i++){const pos=getPos(i);const res=slidePositions(pos);res.forEach((v,j)=>setVal(i,j,v));
-    tracePositions(pos).forEach(mv=>{const f=pos[mv.from],t=pos[mv.to];animSlides.push({value:mv.value,fromR:f.r,fromC:f.c,toR:t.r,toC:t.c});if(mv.merge)mergedCells.add(t.r+','+t.c);});
+    tracePositions(pos).forEach(mv=>{const f=pos[mv.from],t=pos[mv.to];animSlides.push({value:mv.value,fromR:f.r,fromC:f.c,toR:t.r,toC:t.c});if(mv.merge)mergedCells.set(t.r+','+t.c,mv.value);});
   }};
   if(realDir==='left')applySlide(r=>Array.from({length:s},(_,c)=>({r,c})),(r,c,v)=>newBoard[r][c]=v);
   else if(realDir==='right')applySlide(r=>Array.from({length:s},(_,c)=>({r,c:s-1-c})),(r,c,v)=>newBoard[r][s-1-c]=v);
@@ -178,7 +182,8 @@ function move(dir){
   if(hoarder&&G.stepCount>0&&G.stepCount%hoarder.autoItemEvery===0){G.rewardCtx='hoarder';G.phase='REWARD';buildRewardPool();return;}
   let spawn=null;
   if(G.freezeGen>0){G.freezeGen--;if(G.freezeGen===0)G.pendingFloat=tf('float.freezeEnd');}else{spawn=addTile();}
-  if(animSlides.length)G.anim={slides:animSlides,mergedCells,spawn,total:170,start:null,t:0};
+  // merges get a longer window — the evolution cross-fade needs time to read
+  if(animSlides.length)G.anim={slides:animSlides,mergedCells,spawn,total:mergedCells.size?300:170,start:null,t:0};
   updateEnergy();rotateTaunt();if(checkWin())return;if(!canMove()){G.phase='LOSE';G.gameOver=true;try{Haptics.lose();}catch(e){}}
 }
 function canMove(){
@@ -202,7 +207,13 @@ function tickEnv(){
   if(env.id!=='normal'&&env.onStep)env.onStep(G,s-G.envStartStep);
   Object.keys(G.specialTiles).forEach(idx=>{const st=G.specialTiles[idx];if(typeof st.stepsLeft==='number'){st.stepsLeft--;if(st.stepsLeft<=0)delete G.specialTiles[idx];}});
   if(env.id!=='normal'&&env.steps>0&&s-G.envStartStep>=env.steps)endEnv(env);
-  if(G.env.id==='normal'&&s>=G.nextEnvStep)triggerRandomEnv();
+  if(G.env.id!=='normal')return;
+  const script=LEVELS[G.levelIdx]?.envScript;          // scripted beats take priority over the random cycle
+  if(script&&G.envScriptIdx<script.length){
+    const nx=script[G.envScriptIdx];
+    if(s>=nx.at){const e=ENVS.find(x=>x.id===nx.id);G.envScriptIdx++;if(e){setEnv(e);return;}}
+  }
+  if(s>=G.nextEnvStep)triggerRandomEnv();
 }
 function triggerRandomEnv(){const pool=ENVS.filter(e=>e.id!=='normal');setEnv(pool[Math.floor(Math.random()*pool.length)]);}
 function setEnv(env){G.env=env;G.envStartStep=G.stepCount;G.scoreMulti=env.scoreMulti||1;if(env.onStart)env.onStart(G);G.pendingFloat=tf('float.envStart',{icon:env.icon,name:env.name});}

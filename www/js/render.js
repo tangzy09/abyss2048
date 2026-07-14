@@ -72,19 +72,49 @@ const CreatureArt = (() => {
   }
   return { load, get(v){ return imgs[v]; } };
 })();
-// Draw creature image filling the tile + a small tier badge (top-left). Returns false if no art.
-function drawCreatureTile(tx,ty,ts,v,style){
-  const im = CreatureArt.get(v);
-  if (!im) return false;
-  const pad = ts*0.04, size = ts - pad*2;
-  ctx.drawImage(im, tx+pad, ty+pad, size, size);
+function drawTierBadge(tx,ty,ts,v,style){
   const disp = tierDisp(v);
   const fs = Math.max(9, Math.round(ts*0.15));
   ctx.font = `bold ${fs}px sans-serif`;
   const bw = ctx.measureText(disp).width + 8, bh = fs + 5, bx = tx+4, by = ty+4;
   fillRR(bx,by,bw,bh,bh/2,style.fg);
   txt(disp, bx+bw/2, by+bh/2+0.5, style.bg, `bold ${fs}px sans-serif`);
+}
+// Draw creature image filling the tile + a small tier badge (top-left). Returns false if no art.
+function drawCreatureTile(tx,ty,ts,v,style){
+  const im = CreatureArt.get(v);
+  if (!im) return false;
+  const pad = ts*0.04, size = ts - pad*2;
+  ctx.drawImage(im, tx+pad, ty+pad, size, size);
+  drawTierBadge(tx,ty,ts,v,style);
   return true;
+}
+// A merge is an evolution, not a doubling — the parent creature shrinks away while the evolved
+// form swells in, with a burst ring. Falls back to a plain pop when either sprite is missing.
+function drawEvolveTile(tx,ty,ts,tr,v,p,isFog,parentVal){
+  const e = Math.min(1, Math.max(0, p));
+  const prev = CreatureArt.get(parentVal || v/2), next = CreatureArt.get(v);
+  const bounce = 1 + 0.16*Math.sin(e*Math.PI);
+  if (isFog || v === -1 || !prev || !next) { drawTileAt(tx,ty,ts,tr,v,bounce,isFog); return; }
+  const style = tileStyle(v);
+  const cx = tx+ts/2, cy = ty+ts/2, size = ts - ts*0.08;
+  ctx.save();
+  ctx.translate(cx,cy); ctx.scale(bounce,bounce); ctx.translate(-cx,-cy);
+  fillRR(tx,ty,ts,ts,tr,style.bg);
+  ctx.globalAlpha = 1-e;                       // parent fades and shrinks
+  const ps = size*(1 - 0.25*e);
+  ctx.drawImage(prev, cx-ps/2, cy-ps/2, ps, ps);
+  ctx.globalAlpha = e;                         // evolved form swells in
+  const ns = size*(0.7 + 0.3*e);
+  ctx.drawImage(next, cx-ns/2, cy-ns/2, ns, ns);
+  ctx.globalAlpha = 1;
+  if (e > 0.55) { ctx.globalAlpha = (e-0.55)/0.45; drawTierBadge(tx,ty,ts,v,style); ctx.globalAlpha = 1; }
+  ctx.restore();
+  ctx.save();                                  // burst ring expands past the tile edge
+  ctx.globalAlpha = 0.5*(1-e);
+  ctx.strokeStyle = style.fg; ctx.lineWidth = Math.max(2, ts*0.05);
+  ctx.beginPath(); ctx.arc(cx, cy, ts*(0.42 + 0.35*e), 0, Math.PI*2); ctx.stroke();
+  ctx.restore();
 }
 // ── item gear icons: preload assets/items/<id>.webp; falls back to emoji ──
 const ItemArt = (() => {
@@ -186,9 +216,10 @@ function drawBoardAnim(L,t){
     Object.keys(G.specialTiles).forEach(k=>{if(G.specialTiles[k].type==='locked'){const idx=+k,r=Math.floor(idx/s),c=idx%s;if(G.board[r][c]){const[x,y]=cellXY(r,c);drawTileAt(x,y,ts,tr,G.board[r][c],1);}}});
     A.slides.forEach(sl=>{const[fx,fy]=cellXY(sl.fromR,sl.fromC),[gx,gy]=cellXY(sl.toR,sl.toC);drawTileAt(fx+(gx-fx)*e,fy+(gy-fy)*e,ts,tr,sl.value,1,fogAt(sl.toR,sl.toC,sl.value));});
   }else{
-    const pop=(t-SLIDE)/(1-SLIDE);const bounce=1+0.14*Math.sin(Math.min(1,pop)*Math.PI);
+    const pop=(t-SLIDE)/(1-SLIDE);
     for(let r=0;r<s;r++)for(let c=0;c<s;c++){const v=G.board[r][c];if(!v)continue;const[x,y]=cellXY(r,c);
-      let sc=1;if(A.mergedCells.has(r+','+c))sc=bounce;if(A.spawn&&A.spawn[0]===r&&A.spawn[1]===c)sc=Math.min(1,pop*1.3);
+      if(A.mergedCells.has(r+','+c)){drawEvolveTile(x,y,ts,tr,v,pop,fogAt(r,c,v),A.mergedCells.get(r+','+c));continue;}
+      const sc=(A.spawn&&A.spawn[0]===r&&A.spawn[1]===c)?Math.min(1,pop*1.3):1;
       drawTileAt(x,y,ts,tr,v,sc,fogAt(r,c,v));}
   }
 }
